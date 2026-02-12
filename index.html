@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0f172a" />
-  <meta name="description" content="Snuggy – schamfreie Mini-Quests für Haushalt, Finanzen & Freizeit (offline-first)." />
+  <meta name="theme-color" content="#F39B5D" />
+  <meta name="description" content="Snuggy, der Hauspebble – Mach-gut-App. Mini-Schritte, schamfrei, offline-first." />
 
-  <!-- iOS: Standalone/Web-App Feeling -->
+  <!-- iOS Web-App Feeling -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Snuggy" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- iOS Icons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
-  <link rel="apple-touch-icon" sizes="167x167" href="./icon-167.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="./icon-152.png" />
-  <link rel="apple-touch-icon" sizes="120x120" href="./icon-120.png" />
+  <!-- iOS Icons (nicht umbenennen!) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180_v3.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="./icon-167_v3.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="./icon-152_v3.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="./icon-120_v3.png" />
 
   <!-- PWA -->
   <link rel="manifest" href="./manifest.webmanifest" />
@@ -24,141 +24,313 @@
 
   <style>
     :root{
-      --bg:#0b1220; --card:#0f172a; --ink:#e5e7eb; --muted:#9ca3af;
-      --line:#23314d; --ok:#22c55e; --warn:#f59e0b; --blue:#1d4ed8;
-      --r:18px; --pad:14px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      /* Snuggy Palette (warm + freundlich) */
+      --bg1:#FFE7D6;   /* helles apricot */
+      --bg2:#F7D9C8;   /* warmes beige */
+      --bg3:#EADCF7;   /* sanftes lila */
+      --card:#FFF7F1;  /* cremig */
+      --card2:#FFF1E7; /* leicht orange */
+      --ink:#2A1E1A;   /* dunkelbraun */
+      --muted:#6A4A3A; /* braun gedimmt */
+      --line:rgba(58,30,20,.18);
+      --shadow: 0 10px 24px rgba(60,20,10,.12);
+
+      --orange:#F39B5D;
+      --orange2:#F08A3C;
+      --purple:#7E57C2;
+      --green:#2EAD74;
+      --red:#D64A53;
+
+      --r:18px;
+      --pad:14px;
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      background:linear-gradient(180deg,#050913,#0b1220);
-      color:var(--ink);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1100px 700px at 15% 0%, var(--bg3) 0%, rgba(234,220,247,0) 60%),
+        radial-gradient(1100px 700px at 85% 10%, var(--bg1) 0%, rgba(255,231,214,0) 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg1));
+      padding-bottom: calc(92px + env(safe-area-inset-bottom));
       -webkit-font-smoothing:antialiased;
-      padding-bottom: calc(84px + env(safe-area-inset-bottom));
     }
-    header{padding:18px 16px 10px}
-    h1{margin:0;font-size:18px;letter-spacing:.2px}
-    .sub{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.25}
 
-    main{padding:10px 16px 16px;max-width:760px;margin:0 auto}
+    header{
+      padding:14px 16px 8px;
+      max-width:820px;
+      margin:0 auto;
+    }
+    .hdr{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .titleWrap{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      margin:0;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
 
-    .row{display:flex;gap:10px;flex-wrap:wrap}
+    main{
+      max-width:820px;
+      margin:0 auto;
+      padding:8px 16px 16px;
+    }
+
     .card{
-      background:rgba(15,23,42,.92);
+      background:rgba(255,247,241,.88);
       border:1px solid var(--line);
       border-radius:var(--r);
       padding:var(--pad);
       box-shadow:var(--shadow);
+      backdrop-filter: blur(6px);
     }
-    .card h2{margin:0 0 10px;font-size:14px}
-    .muted{color:var(--muted);font-size:12px;line-height:1.25}
-    .sep{height:1px;background:var(--line);margin:12px 0}
+    .card.soft{
+      background:rgba(255,241,231,.78);
+    }
 
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(2,6,23,.35);font-size:12px;color:var(--muted);
-    }
-    .big{font-size:22px;font-weight:900}
+    .row{ display:flex; gap:10px; flex-wrap:wrap; }
+    .col{ display:flex; flex-direction:column; gap:10px; }
+    .muted{ color:var(--muted); font-size:12px; line-height:1.25; }
+    .sep{ height:1px; background:var(--line); margin:12px 0; }
 
     .btn{
-      border:1px solid var(--line);
-      background:rgba(2,6,23,.35);
+      border:1px solid rgba(58,30,20,.18);
+      background:rgba(255,255,255,.55);
       color:var(--ink);
-      padding:12px 14px;
-      border-radius:16px;
-      font-weight:850;
+      padding:14px 14px;
+      border-radius:18px;
+      font-weight:900;
       letter-spacing:.2px;
       cursor:pointer;
       user-select:none;
-      transition:transform .05s ease;
       -webkit-tap-highlight-color: transparent;
+      transition: transform .05s ease;
     }
-    .btn:active{transform:scale(.98)}
-    .btn.primary{background:linear-gradient(180deg,#1d4ed8,#1e40af);border-color:#1e3a8a}
-    .btn.ok{background:linear-gradient(180deg,#16a34a,#15803d);border-color:#14532d}
-    .btn.warn{background:linear-gradient(180deg,#f59e0b,#b45309);border-color:#78350f}
-    .btn.ghost{background:transparent}
-
-    .snuggy{
-      width:48px;height:48px;border-radius:16px;
-      border:1px solid var(--line);background:rgba(2,6,23,.35);
-      flex:0 0 auto;
+    .btn:active{ transform:scale(.985); }
+    .btn.primary{
+      background:linear-gradient(180deg, var(--orange), var(--orange2));
+      border-color: rgba(120,50,20,.18);
     }
-    .snuggyMini{
-      width:34px;height:34px;border-radius:14px;
-      border:1px solid var(--line);background:rgba(2,6,23,.35);
-      flex:0 0 auto;margin-top:2px;
+    .btn.purple{
+      background:linear-gradient(180deg, #8D6AE0, var(--purple));
+      color:white;
+      border-color: rgba(60,20,120,.25);
+    }
+    .btn.green{
+      background:linear-gradient(180deg, #3ED59A, var(--green));
+      color:#0c2a1c;
+      border-color: rgba(20,80,50,.18);
+    }
+    .btn.ghost{
+      background:rgba(255,255,255,.25);
+    }
+    .btn.big{
+      width:100%;
+      padding:18px 16px;
+      font-size:16px;
+      border-radius:22px;
     }
 
     .nav{
-      position:fixed;left:0;right:0;bottom:0;
-      background:rgba(2,6,23,.86);
-      border-top:1px solid var(--line);
+      position:fixed; left:0; right:0; bottom:0;
       padding:10px 12px;
       padding-bottom: calc(10px + env(safe-area-inset-bottom));
-      backdrop-filter:blur(10px);
+      background:rgba(255,247,241,.78);
+      border-top:1px solid var(--line);
+      backdrop-filter: blur(10px);
     }
-    .nav .row{max-width:760px;margin:0 auto}
-    .nav .btn{flex:1}
+    .nav .row{
+      max-width:820px;
+      margin:0 auto;
+      gap:10px;
+    }
+    .nav .btn{ flex:1; padding:12px 10px; border-radius:16px; font-size:13px; }
 
+    /* Start: Vollbild Snuggy */
+    .hero{
+      overflow:hidden;
+      border-radius:24px;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      background:rgba(255,255,255,.5);
+    }
+    .hero img{
+      width:100%;
+      display:block;
+      max-height: 56vh;
+      object-fit: contain;
+      background: linear-gradient(180deg, rgba(255,241,231,.65), rgba(255,231,214,.55));
+    }
+    .heroBottom{
+      padding:14px;
+    }
+
+    /* Kategorie Buttons groß */
+    .catGrid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+
+    /* Rubriken als große Buttons, kompakte Hearts-Anzeige */
+    .rubricBtn{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      width:100%;
+      text-align:left;
+    }
+    .rubricTitle{ font-size:15px; font-weight:950; }
+    .rubricStep{ font-size:12px; color:var(--muted); margin-top:4px; font-weight:700; }
+    .badge{
+      font-size:12px;
+      font-weight:950;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.55);
+      white-space:nowrap;
+    }
+
+    /* kleine Herzen (halb/ voll) */
+    .heartsMini{
+      display:flex;
+      gap:4px;
+      align-items:center;
+      justify-content:flex-end;
+      flex-wrap:nowrap;
+    }
+    .h{
+      width:10px;
+      height:10px;
+      border-radius:3px;
+      border:1px solid rgba(58,30,20,.22);
+      background:rgba(255,255,255,.35);
+    }
+    .h.half{
+      background: linear-gradient(90deg, rgba(214,74,83,.9) 50%, rgba(255,255,255,.35) 50%);
+      border-color: rgba(214,74,83,.5);
+    }
+    .h.full{
+      background: rgba(214,74,83,.95);
+      border-color: rgba(214,74,83,.5);
+    }
+
+    /* Quest View */
+    .questTop{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .avatar{
+      width:54px; height:54px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.55);
+      flex:0 0 auto;
+      object-fit:contain;
+      padding:6px;
+    }
+    .qTitle{ margin:0; font-size:18px; font-weight:1000; }
+    .qSub{ margin:4px 0 0; font-size:12px; color:var(--muted); font-weight:800; }
+
+    .scoreRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.55);
+      font-size:12px;
+      font-weight:950;
+    }
+
+    /* Herz Raster (kompakt) */
     .grid{
       display:grid;
-      grid-template-columns:repeat(5, minmax(0,1fr));
-      gap:8px;margin-top:10px;
+      grid-template-columns:repeat(10, minmax(0,1fr));
+      gap:6px;
+      margin-top:10px;
     }
     .cell{
       aspect-ratio:1/1;
-      display:flex;align-items:center;justify-content:center;
-      border:1px solid var(--line);
-      border-radius:16px;
-      background:rgba(2,6,23,.35);
-      color:var(--muted);
-      font-weight:900;
-      user-select:none;
+      border-radius:10px;
+      border:1px solid rgba(58,30,20,.18);
+      background:rgba(255,255,255,.40);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:950;
+      font-size:12px;
+      color:rgba(42,30,26,.55);
     }
-    .cell.done{
-      background:rgba(34,197,94,.12);
-      border-color:rgba(34,197,94,.45);
-      color:var(--ink);
-    }
-
-    .qbar{
-      height:10px;border-radius:999px;
-      background:rgba(2,6,23,.45);
-      border:1px solid var(--line);
-      overflow:hidden;
-    }
-    .qbar > div{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#60a5fa)}
-    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width:520px){ .two{grid-template-columns:1fr} }
-
-    input[type="number"], input[type="text"], textarea{
-      width:100%;padding:10px 12px;border-radius:14px;
-      border:1px solid var(--line);background:rgba(2,6,23,.35);
-      color:var(--ink);outline:none;
-    }
-    textarea{min-height:90px;resize:vertical}
+    .cell.half{ background: linear-gradient(90deg, rgba(214,74,83,.9) 50%, rgba(255,255,255,.40) 50%); border-color: rgba(214,74,83,.45); color: rgba(42,30,26,.18);}
+    .cell.full{ background: rgba(214,74,83,.92); border-color: rgba(214,74,83,.45); color: rgba(42,30,26,.0); }
 
     dialog{
-      border:none;border-radius:20px;padding:16px;
-      background:rgba(15,23,42,.98);color:var(--ink);
-      max-width:560px;width:calc(100% - 24px);
-      border:1px solid var(--line);box-shadow:var(--shadow);
+      border:none;
+      border-radius:22px;
+      padding:16px;
+      max-width:560px;
+      width:calc(100% - 24px);
+      background: rgba(255,247,241,.97);
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
     }
-    dialog::backdrop{background:rgba(0,0,0,.55)}
+    dialog::backdrop{ background: rgba(0,0,0,.35); }
+
+    .dlgHead{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .dlgHead img{
+      width:54px; height:54px; border-radius:18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.6);
+      object-fit:contain;
+      padding:6px;
+    }
+
+    /* very mobile friendly spacing */
+    @media (max-width:420px){
+      .grid{ grid-template-columns:repeat(8, minmax(0,1fr)); }
+      .nav .btn{ font-size:12px; }
+    }
   </style>
 </head>
 
 <body>
 <header>
-  <div style="display:flex;gap:12px;align-items:center">
-    <img src="./snuggy.png" alt="Snuggy" class="snuggy">
-    <div>
-      <h1>Snuggy – Mach-gut-App</h1>
-      <div class="sub">Mini zählt. Scham raus. Spiel an.</div>
+  <div class="hdr">
+    <div class="titleWrap">
+      <h1>Snuggy, der Hauspebble</h1>
+      <div class="subtitle">Mach-gut-App</div>
     </div>
   </div>
 </header>
@@ -167,330 +339,404 @@
 
 <div class="nav">
   <div class="row">
-    <button class="btn primary" onclick="go('start')">Start</button>
+    <button class="btn" onclick="go('start')">Start</button>
     <button class="btn" onclick="go('kats')">Kategorien</button>
-    <button class="btn" onclick="go('bank')">Konto</button>
-    <button class="btn ghost" onclick="go('settings')">⚙️</button>
+    <button class="btn" onclick="go('konto')">Konto</button>
+    <button class="btn ghost" onclick="go('settings')">Einstellungen</button>
   </div>
 </div>
 
-<dialog id="dlgReward">
-  <h2 style="margin:0 0 8px;font-size:16px">Überraschung 🎁</h2>
-  <div style="display:flex;gap:12px;align-items:center;margin:8px 0 12px">
-    <img src="./snuggy.png" alt="Snuggy" style="width:56px;height:56px;border-radius:18px;border:1px solid var(--line);background:rgba(2,6,23,.35)">
-    <div class="muted">Snuggy liefert. Kein schlechtes Gewissen dabei.</div>
+<!-- Geschenk alle 5 Herzen -->
+<dialog id="dlgGift">
+  <div class="dlgHead">
+    <img src="./snuggy_avatar_v3.png" alt="Snuggy" />
+    <div>
+      <div style="font-weight:1000;font-size:16px;margin:0">Geschenk 🎁</div>
+      <div class="muted">Alle 5 Herzen. Zufall. Lob + kleine Gönnung.</div>
+    </div>
   </div>
-  <div class="card" style="padding:12px;margin:0 0 12px;background:rgba(2,6,23,.35)">
-    <div id="rewardText" style="font-weight:900"></div>
-    <div id="rewardHint" class="muted" style="margin-top:6px"></div>
+  <div class="sep"></div>
+  <div class="card soft" style="padding:12px">
+    <div id="giftText" style="font-weight:1000"></div>
+    <div class="muted" style="margin-top:6px">Gönn dir das. Ohne Debatte.</div>
   </div>
-  <div class="row" style="justify-content:flex-end">
-    <button class="btn" onclick="closeReward()">Okay</button>
+  <div class="row" style="justify-content:flex-end;margin-top:12px">
+    <button class="btn" onclick="closeDlg('dlgGift')">Okay</button>
+  </div>
+</dialog>
+
+<!-- Tägliche Überraschung -->
+<dialog id="dlgSurprise">
+  <div class="dlgHead">
+    <img src="./snuggy_avatar_v3.png" alt="Snuggy" />
+    <div>
+      <div style="font-weight:1000;font-size:16px;margin:0">Tägliche Überraschung ✨</div>
+      <div class="muted">Einmal pro Tag. Vor oder nach der Arbeit.</div>
+    </div>
+  </div>
+  <div class="sep"></div>
+  <div class="card soft" style="padding:12px">
+    <div id="surpriseText" style="font-weight:1000"></div>
+  </div>
+  <div class="row" style="justify-content:flex-end;margin-top:12px">
+    <button class="btn" onclick="closeDlg('dlgSurprise')">Okay</button>
   </div>
 </dialog>
 
 <script>
-/* =========================
-   Snuggy MVP (offline-first)
-   ========================= */
+/* =========================================================
+   Snuggy Mach-gut-App v3
+   - Neues Farbschema
+   - Start: Snuggy Vollbild + Jetzt spielen
+   - Kategorien -> Rubriken (große Buttons)
+   - Herzsystem: Einheiten (halbe Herzen)
+       Mini = 1 Einheit (0.5 Herz)  -> alle 2 Minis = 1 Herz
+       Normal = 2 Einheiten (1 Herz)
+       Boss = 4 Einheiten (2 Herzen)
+   - Geschenk alle 5 Herzen (=10 Einheiten)
+   - Tägliche Überraschung: 1x/Tag
+   ========================================================= */
 
-const KEY = "snuggy_app_v2";
+const KEY = "snuggy_v3_state";
 
-/** Default: klein, stabil, iPhone-sicher */
+/* Herz-Units */
+const U_HALF = 1;         // 0.5 Herz
+const U_HEART = 2;        // 1 Herz
+const U_BOSS = 4;         // 2 Herzen
+
+const UNITS_PER_GIFT = 10; // 5 Herzen
+
 const DEFAULT = {
   view: "start",
-  activeCat: "finanzen",
+  activeCat: null,
+  activeQuestId: null,
 
   settings: {
     lowMotion: false
   },
 
   bank: {
-    heartsTotal: 0,
-    giftEvery: 5,
-    bigGoalAt: 100,
-    bigGoalText: "Großes Ziel: Special-Day / Sauna / Lieblingsort",
-    rewards: [
-      "10 Minuten Lieblingsmusik.",
-      "Tee/Wasser holen + 5 tiefe Atemzüge.",
-      "15 Minuten guilt-free Serie/YouTube.",
-      "2 Minuten vor die Tür. Das zählt.",
-      "Eine Sache hübsch machen (Licht/Decke/Kerze).",
-      "Lieblingssnack klein.",
-      "Bad/Dusche kurz & warm."
+    totalUnits: 0,             // in halben Herzen
+    bigGoalHearts: 100,        // Boss Ziel: 100 Herzen
+    bigGoalText: "Special Day / Therme",
+    gifts: [
+      "„Du machst das großartig, Baby“ – Gönn dir: Lieblingssnack.",
+      "„Kein Schwanz ist so hart wie das Leben“ – Mach dir ein Eis/Drink/Tee.",
+      "„Ay Papi, nie war ich stolzer auf dich“ – 15 Minuten guilt-free Spiel.",
+      "„Crazy MoFo, das hast du hinter dir“ – Musik an, Kopfhörer drauf.",
+      "„Sind Sie auch so ein Süßmaul?“ – Dann gönn dir einen Snack.",
+      "„Lizenz zum Ausrasten“ – Zeig Boomer-Jürgen oder Dinkel-Dörthe, wo der Hammer hängt."
     ],
-    rewardHistory: []
+    giftHistory: []
   },
 
-  // Minimal: je Kategorie ein paar Quests, leicht erweiterbar später
+  surprise: {
+    lastDate: null, // "YYYY-MM-DD"
+    texts: [
+      "Snuggy sagt: „Vor der Arbeit: Rücken gerade. Du gehst da rein wie ein Champion.“",
+      "Snuggy sagt: „Du bist wach, du bist da — das reicht, um zu gewinnen. Los.“",
+      "Snuggy sagt: „Heute ist Trainingstag. Nicht perfekt — aber präsent. Stark.“",
+      "Snuggy sagt: „Du hast schon gewonnen, weil du aufgetaucht bist. Jetzt zieh’s durch.“",
+      "Snuggy sagt: „Feierabend: Du hast geliefert. Punkt. Respekt.“",
+      "Snuggy sagt: „Du bist nicht kaputt — du bist im Aufbau. Und du baust gerade.“",
+      "Snuggy sagt: „Fahrräder bleiben kaputt, Wunden heilen.“",
+      "Snuggy sagt: „Heute war nicht leicht — und genau deswegen warst du stark.“",
+      "Snuggy sagt: „Wenn der Kopf schreit: egal. Du machst es trotzdem. Das ist Cobra Kai-Mindset.“",
+      "Snuggy sagt: „Nach der Arbeit: Helm ab, Schuhe aus. Du hast’s überlebt UND abgeliefert. Starkes Ding.“",
+      "Snuggy sagt: „Du lebst noch. Ja dann hast du alles verdient, das du haben willst.“",
+      "Snuggy sagt: „Ich bin stolz auf dich. Jetzt leg dich trocken weg.“",
+      "Snuggy sagt: „Heute wird nicht perfekt. Heute wird erledigt. Punkt.“",
+      "Snuggy sagt: „Du bist nicht allein. Ich bin hier. Jetzt raus da.“",
+      "Snuggy sagt: „Heute war hart. Du warst härter. Punkt.“",
+      "Snuggy sagt: „Du hast heute nicht aufgegeben. Das ist der ganze Trick.“",
+      "Snuggy sagt: „Du hast gearbeitet, obwohl’s schwer war. Das ist der ganze Trick.“",
+      "Snuggy sagt: „Du bist nicht faul — du bist erschöpft. Und du hast Pausen verdient.“"
+    ]
+  },
+
+  cats: [
+    { id:"finanzen", name:"Finanzen", color:"primary" },
+    { id:"freizeit", name:"Freizeit", color:"purple" },
+    { id:"gesundheit", name:"Gesundheit", color:"green" },
+    { id:"haushalt", name:"Haushalt", color:"ghost" }
+  ],
+
+  /* Rubriken/Quests: jede hat progressUnits und actions (für Undo) */
   quests: [
-    { id:"fin-konto", cat:"finanzen", title:"Konto kurz checken (2 Min)", gridSize: 15, marks:[], firstStep:"Banking öffnen → Stand ansehen → fertig." },
-    { id:"fin-impuls", cat:"finanzen", title:"Impuls-Kauf stoppen", gridSize: 21, marks:[], firstStep:"10 Minuten warten. Wunsch notieren (optional)." },
+    // FINANZEN
+    { id:"fin_a", cat:"finanzen", title:"Kontocheck", step:"Banking öffnen – ansehen – fertig", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"fin_b", cat:"finanzen", title:"Impulskauf gestoppt", step:"Was tolles gesehen – Seite geschlossen – fertig", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"fin_c", cat:"finanzen", title:"Gekocht statt bestellt", step:"Lebensmittel genutzt", gridHearts: 20, progressUnits: 0, actions:[] },
 
-    { id:"free-luft", cat:"freizeit", title:"Frische Luft", gridSize: 15, marks:[], firstStep:"Schuhe an → nur kurz raus zählt schon." },
-    { id:"free-gym", cat:"freizeit", title:"Gym (Mini zählt!)", gridSize: 21, marks:[], firstStep:"Tasche packen → auftauchen ist Erfolg." },
+    // FREIZEIT
+    { id:"free_a", cat:"freizeit", title:"Frische Luft", step:"Schuhe an – nur kurz raus", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"free_b", cat:"freizeit", title:"Gym", step:"Tasche packen – auftauchen ist der Erfolg", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"free_c", cat:"freizeit", title:"Ritual", step:"Regelmäßiges Ritual reicht (TV/Podcast)", gridHearts: 20, progressUnits: 20?0:0, actions:[] }, /* trick to keep linter quiet */
+    { id:"free_d", cat:"freizeit", title:"Joggen", step:"Schuhe an und fertig", gridHearts: 20, progressUnits: 0, actions:[] },
 
-    { id:"home-muell", cat:"haushalt", title:"Müll raus", gridSize: 30, marks:[], firstStep:"Einen Beutel nehmen. Nur den." },
-    { id:"home-5teile", cat:"haushalt", title:"Küche: 5 Teile", gridSize: 21, marks:[], firstStep:"5 Dinge weg. Stop nach 5." }
+    // GESUNDHEIT
+    { id:"health_a", cat:"gesundheit", title:"Arzttermin gemacht", step:"Anruf genügt", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"health_b", cat:"gesundheit", title:"Protein", step:"Jedes Gramm zählt", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"health_c", cat:"gesundheit", title:"Frühstück gehabt", step:"Anti-Hangry Modus", gridHearts: 20, progressUnits: 20?0:0, actions:[] },
+    { id:"health_d", cat:"gesundheit", title:"Tag ohne Süßigkeit", step:"Entschädigung: doppelte Punkte", gridHearts: 20, progressUnits: 0, actions:[], doublePoints:true },
+
+    // HAUSHALT
+    { id:"home_a", cat:"haushalt", title:"Spülmaschine", step:"Ein- oder ausgeräumt", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"home_b", cat:"haushalt", title:"Müll rausbringen", step:"Ist auch frische Luft", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"home_c", cat:"haushalt", title:"Küchenmüll in Abfall", step:"Besser als aufräumen", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"home_d", cat:"haushalt", title:"Ruby", step:"Ruby arbeitet, du die Credits", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"home_e", cat:"haushalt", title:"Wäsche/Trockner", step:"Jede Ladung zählt", gridHearts: 20, progressUnits: 0, actions:[] },
+    { id:"home_f", cat:"haushalt", title:"Post", step:"Geöffnet/bearbeitet/abgelegt – alles zählt", gridHearts: 20, progressUnits: 0, actions:[] }
   ]
 };
 
-let state = loadState();
+function todayISO(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
 
 function loadState(){
   try{
     const s = JSON.parse(localStorage.getItem(KEY));
     if(!s) return structuredClone(DEFAULT);
-    return {
+
+    // Mergen, damit Updates robust bleiben
+    const merged = {
       ...structuredClone(DEFAULT),
       ...s,
       settings: { ...structuredClone(DEFAULT.settings), ...(s.settings||{}) },
       bank: { ...structuredClone(DEFAULT.bank), ...(s.bank||{}) },
+      surprise: { ...structuredClone(DEFAULT.surprise), ...(s.surprise||{}) },
+      cats: (s.cats && s.cats.length) ? s.cats : structuredClone(DEFAULT.cats),
       quests: (s.quests && s.quests.length) ? s.quests : structuredClone(DEFAULT.quests)
     };
+
+    // ensure quest fields exist
+    for(const q of merged.quests){
+      if(typeof q.progressUnits !== "number") q.progressUnits = 0;
+      if(!Array.isArray(q.actions)) q.actions = [];
+      if(typeof q.gridHearts !== "number") q.gridHearts = 20;
+    }
+    return merged;
   }catch(e){
     return structuredClone(DEFAULT);
   }
 }
+
+let state = loadState();
+
 function saveState(){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+function go(view){
+  state.view = view;
+  if(view !== "quest") state.activeQuestId = null;
+  saveState();
+  render();
 }
 
-function catLabel(cat){
-  return cat==="finanzen" ? "1 Finanzen" : cat==="freizeit" ? "2 Freizeit" : "3 Haushalt";
+function openCat(catId){
+  state.activeCat = catId;
+  state.view = "cat";
+  saveState();
+  render();
 }
 
-function snuggyLine(){
-  const lines = [
-    "Mini zählt. Wirklich.",
-    "Ein Schritt ist ein Schritt. Kein Urteil.",
-    "Heute klein gewinnen ist völlig okay.",
-    "Wir spielen, wir strafen nicht.",
-    "Wenn’s schwer ist: kleiner gewinnen.",
-    "Regelmäßigkeit > Heldentum."
-  ];
-  return lines[Math.floor(Math.random()*lines.length)];
+function openQuest(qid){
+  state.activeQuestId = qid;
+  state.view = "quest";
+  saveState();
+  render();
 }
 
-/* Navigation */
-function go(view){ state.view = view; saveState(); render(); }
-function openCat(cat){ state.activeCat = cat; state.view="cat"; saveState(); render(); }
+function closeDlg(id){
+  document.getElementById(id).close();
+  render();
+}
 
-/* Hearts logic: Mini/Normal/Boss = 1/2/3 Herzen */
-function nextFreeIndex(q){
-  const used = new Set((q.marks||[]).map(m=>m.i));
-  for(let i=1;i<=q.gridSize;i++){
-    if(!used.has(i)) return i;
+/* Units helpers */
+function unitsToHeartsText(units){
+  const hearts = units / 2;
+  // show .5 if needed
+  return Number.isInteger(hearts) ? `${hearts}` : `${hearts.toFixed(1)}`;
+}
+
+function totalHearts(){
+  return state.bank.totalUnits / 2;
+}
+
+/* Gift trigger every 5 hearts */
+function maybeGift(){
+  const u = state.bank.totalUnits;
+  if(u > 0 && u % UNITS_PER_GIFT === 0){
+    openGift();
   }
-  return null;
 }
-function addHeart(qid, points){
+
+function openGift(){
+  const arr = state.bank.gifts || [];
+  const pick = arr.length ? arr[Math.floor(Math.random()*arr.length)] : "Gönn dir was Kleines.";
+  document.getElementById("giftText").textContent = pick;
+
+  state.bank.giftHistory = state.bank.giftHistory || [];
+  state.bank.giftHistory.push({ t: Date.now(), text: pick });
+  saveState();
+
+  document.getElementById("dlgGift").showModal();
+}
+
+/* Surprise once per day */
+function canUseSurprise(){
+  return state.surprise.lastDate !== todayISO();
+}
+
+function useSurprise(){
+  if(!canUseSurprise()) return;
+
+  const texts = state.surprise.texts || [];
+  const pick = texts.length ? texts[Math.floor(Math.random()*texts.length)] : "Snuggy sagt: „Du machst das.“";
+  document.getElementById("surpriseText").textContent = pick;
+
+  state.surprise.lastDate = todayISO();
+  saveState();
+
+  document.getElementById("dlgSurprise").showModal();
+}
+
+/* Quest actions */
+function addAction(qid, units, label){
   const q = state.quests.find(x=>x.id===qid);
   if(!q) return;
 
-  const idx = nextFreeIndex(q);
-  if(idx === null){
-    toast("Raster voll. Du kannst es (schamfrei) leeren.");
-    return;
-  }
+  // doublePoints quest
+  if(q.doublePoints) units *= 2;
 
-  q.marks.push({ i: idx, t: Date.now(), p: points });
-  state.bank.heartsTotal += points;
+  q.actions.push({ t: Date.now(), u: units, label });
+  q.progressUnits += units;
+  state.bank.totalUnits += units;
 
-  // Geschenk-Trigger
-  const n = Math.max(1, Number(state.bank.giftEvery||5));
-  if(state.bank.heartsTotal > 0 && state.bank.heartsTotal % n === 0){
-    openReward(false);
-  }
-  const bigAt = Math.max(10, Number(state.bank.bigGoalAt||100));
-  if(state.bank.heartsTotal > 0 && state.bank.heartsTotal % bigAt === 0){
-    openReward(true);
-  }
-
-  saveState(); render();
+  saveState();
+  maybeGift();
+  render();
 }
-function undoLast(qid){
+
+function undoAction(qid){
   const q = state.quests.find(x=>x.id===qid);
-  if(!q || !q.marks?.length) return;
-  const last = q.marks.pop();
-  state.bank.heartsTotal = Math.max(0, state.bank.heartsTotal - Number(last.p||1));
-  saveState(); render();
-  toast("Undo.");
+  if(!q || !q.actions.length) return;
+
+  const last = q.actions.pop();
+  const u = Number(last.u||0);
+  q.progressUnits = Math.max(0, q.progressUnits - u);
+  state.bank.totalUnits = Math.max(0, state.bank.totalUnits - u);
+
+  saveState();
+  render();
 }
+
 function resetQuest(qid){
   const q = state.quests.find(x=>x.id===qid);
   if(!q) return;
-  q.marks = [];
-  saveState(); render();
-  toast("Raster geleert (Bank bleibt schamfrei).");
-}
 
-/* Rewards */
-function pickReward(){
-  const arr = state.bank.rewards || [];
-  if(!arr.length) return "Du darfst dir jetzt etwas Kleines gönnen.";
-  return arr[Math.floor(Math.random()*arr.length)];
-}
-function openReward(big){
-  const text = big ? (state.bank.bigGoalText || "Großes Ziel erreicht!") : pickReward();
-  document.getElementById("rewardText").textContent = text;
-  document.getElementById("rewardHint").textContent = big
-    ? "Boss-Meilenstein: mach’s dir richtig gut."
-    : "Kleine Belohnungen halten Systeme am Leben.";
-
-  state.bank.rewardHistory = state.bank.rewardHistory || [];
-  state.bank.rewardHistory.push({ t: Date.now(), text, big: !!big });
+  // Schamfrei: wir resetten nur Quest-Progress, nicht die Bank.
+  q.progressUnits = 0;
+  q.actions = [];
   saveState();
-
-  document.getElementById("dlgReward").showModal();
+  render();
 }
-function closeReward(){ document.getElementById("dlgReward").close(); render(); }
 
-/* Toast */
-let toastTimer=null;
-function toast(msg){
-  clearTimeout(toastTimer);
-  const el = document.createElement("div");
-  el.className="card";
-  el.style.position="fixed";
-  el.style.left="12px";
-  el.style.right="12px";
-  el.style.bottom="calc(88px + env(safe-area-inset-bottom))";
-  el.style.zIndex="9999";
-  el.style.padding="12px";
-  el.style.maxWidth="760px";
-  el.style.margin="0 auto";
-  el.innerHTML = `
-    <div style="display:flex;gap:10px;align-items:flex-start">
-      <img src="./snuggy.png" alt="Snuggy" style="width:36px;height:36px;border-radius:14px;border:1px solid var(--line);background:rgba(2,6,23,.35)">
-      <div>
-        <div style="font-weight:900;margin-bottom:4px">Snuggy</div>
-        <div class="muted">${escapeHtml(msg)}</div>
-        <div class="muted" style="margin-top:6px;opacity:.9">„${escapeHtml(snuggyLine())}“</div>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(el);
-  toastTimer=setTimeout(()=>el.remove(), 1700);
+/* UI components */
+function miniHearts(units, maxHearts=10){
+  // show up to maxHearts hearts (each heart = 2 units)
+  const maxUnits = maxHearts * 2;
+  const shownUnits = Math.min(units, maxUnits);
+
+  let html = `<div class="heartsMini" aria-label="Fortschritt">`;
+  for(let i=0;i<maxHearts;i++){
+    const slotUnits = shownUnits - i*2;
+    const cls = slotUnits >= 2 ? "h full" : slotUnits === 1 ? "h half" : "h";
+    html += `<span class="${cls}"></span>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+function questGrid(units, gridHearts){
+  // gridHearts hearts = gridHearts * 2 units
+  const totalSlots = gridHearts;
+  let html = `<div class="grid">`;
+  for(let i=0;i<totalSlots;i++){
+    const slotUnits = units - i*2;
+    const cls = slotUnits >= 2 ? "cell full" : slotUnits === 1 ? "cell half" : "cell";
+    html += `<div class="${cls}"></div>`;
+  }
+  html += `</div>`;
+  return html;
 }
 
 /* Views */
 function startView(){
-  const total = Number(state.bank.heartsTotal||0);
-  const n = Math.max(1, Number(state.bank.giftEvery||5));
-  const toNext = n - (total % n || n);
+  const hearts = totalHearts();
+  const nextGiftInUnits = UNITS_PER_GIFT - (state.bank.totalUnits % UNITS_PER_GIFT || UNITS_PER_GIFT);
+  const nextGiftInHearts = nextGiftInUnits / 2;
+
+  const surpriseBtn = canUseSurprise()
+    ? `<button class="btn purple big" onclick="useSurprise()">Tägliche Überraschung ✨</button>
+       <div class="muted" style="margin-top:8px">Einmal am Tag. Vor oder nach der Arbeit.</div>`
+    : `<button class="btn ghost big" disabled style="opacity:.55;cursor:not-allowed">Überraschung schon genutzt ✅</button>
+       <div class="muted" style="margin-top:8px">Morgen gibt’s die nächste.</div>`;
 
   return `
+    <div class="hero">
+      <img src="./snuggy_voll.png" alt="Snuggy" onerror="this.onerror=null;this.src='./snuggy_avatar_v3.png'">
+      <div class="heroBottom">
+        <div class="row" style="align-items:center;justify-content:space-between">
+          <div class="pill">Konto: <span style="font-size:14px">♥ ${unitsToHeartsText(state.bank.totalUnits)}</span></div>
+          <div class="pill">Nächstes Geschenk in: <span style="font-size:14px">♥ ${unitsToHeartsText(nextGiftInUnits)}</span></div>
+        </div>
+
+        <div style="height:12px"></div>
+        <button class="btn primary big" onclick="go('kats')">Jetzt spielen</button>
+
+        <div style="height:10px"></div>
+        <div class="muted">iPhone: Safari → Teilen → „Zum Home-Bildschirm“ → als App starten.</div>
+
+        <div style="height:14px"></div>
+        ${surpriseBtn}
+      </div>
+    </div>
+  `;
+}
+
+function categoriesView(){
+  return `
     <div class="card">
-      <div class="row" style="justify-content:space-between;align-items:center">
-        <div>
-          <div class="muted">Mach-gut-Konto</div>
-          <div class="big">${total} ♥</div>
-          <div class="muted">Nächstes 🎁 in <b>${toNext}</b> ♥</div>
-        </div>
-        <div class="row">
-          <button class="btn ok" onclick="quickPlay()">Heute spielen</button>
-          <button class="btn" onclick="openReward(false)">🎁</button>
-        </div>
-      </div>
-
-      <div class="sep"></div>
-
-      <div style="display:flex;gap:12px;align-items:center">
-        <img src="./snuggy.png" alt="Snuggy" style="width:52px;height:52px;border-radius:18px;border:1px solid var(--line);background:rgba(2,6,23,.35)">
-        <div class="muted"><b style="color:var(--ink)">Snuggy sagt:</b><br>„${escapeHtml(snuggyLine())}“</div>
-      </div>
+      <h2 style="margin:0 0 8px;font-size:16px;font-weight:1000">Kategorien</h2>
+      <div class="muted">Tippe eine Kategorie → dann siehst du die Rubriken (große Buttons).</div>
     </div>
 
     <div style="height:12px"></div>
 
-    <div class="card">
-      <h2>iPhone-Install (Kurz)</h2>
-      <div class="muted">Safari → Teilen → „Zum Home-Bildschirm“ → dann als App starten.</div>
+    <div class="catGrid">
+      ${state.cats.map(c=>`
+        <button class="btn big ${c.color}" onclick="openCat('${c.id}')">${c.name}</button>
+      `).join("")}
     </div>
   `;
 }
 
-function quickPlay(){
-  // Kategorie mit den wenigsten Marks
-  const cats=["finanzen","freizeit","haushalt"];
-  const score = cat => state.quests.filter(q=>q.cat===cat).reduce((a,q)=>a+(q.marks?.length||0),0);
-  cats.sort((a,b)=>score(a)-score(b));
-  state.activeCat=cats[0];
-  state.view="cat";
-  saveState(); render();
-  toast("Ein Schritt reicht.");
-}
-
-function catsView(){
-  return `
-    <div class="card">
-      <h2>Kategorien</h2>
-      <div class="muted">Drei Türen. Mehr brauchen wir nicht.</div>
-      <div style="height:12px"></div>
-      <div class="row">
-        ${["finanzen","freizeit","haushalt"].map(cat=>`
-          <button class="btn" onclick="openCat('${cat}')">${catLabel(cat)}</button>
-        `).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function questCard(q){
-  const done = (q.marks||[]).length;
-  const bar = Math.min(100, (done / q.gridSize) * 100);
-  const set = new Set((q.marks||[]).map(m=>m.i));
+function catView(){
+  const catId = state.activeCat;
+  const cat = state.cats.find(c=>c.id===catId);
+  const items = state.quests.filter(q=>q.cat===catId);
 
   return `
     <div class="card">
-      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
-        <div style="display:flex;gap:10px;align-items:flex-start">
-          <img src="./snuggy.png" alt="Snuggy" class="snuggyMini">
-          <div>
-            <div style="font-weight:950">${escapeHtml(q.title)}</div>
-            <div class="muted">Start: <b>${escapeHtml(q.firstStep||"Ein winziger Anfang reicht.")}</b></div>
-          </div>
-        </div>
-        <div class="pill">${done}/${q.gridSize} ♥</div>
-      </div>
-
-      <div style="height:10px"></div>
-      <div class="qbar"><div style="width:${bar}%"></div></div>
-
-      <div style="height:12px"></div>
-      <div class="row">
-        <button class="btn ok" onclick="addHeart('${q.id}', 1)">Mini +1 ♥</button>
-        <button class="btn" onclick="addHeart('${q.id}', 2)">Normal +2 ♥</button>
-        <button class="btn warn" onclick="addHeart('${q.id}', 3)">Boss +3 ♥</button>
-      </div>
-
-      <div style="height:10px"></div>
-      <div class="row">
-        <button class="btn ghost" onclick="undoLast('${q.id}')">↩︎ Undo</button>
-        <button class="btn ghost" onclick="resetQuest('${q.id}')">Raster leeren</button>
-      </div>
-
-      <div class="grid">
-        ${Array.from({length:q.gridSize}, (_,k)=>k+1).map(i=>{
-          const isDone = set.has(i);
-          return `<div class="cell ${isDone?'done':''}">${isDone ? "♥" : i}</div>`;
-        }).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function catView(cat){
-  const items = state.quests.filter(q=>q.cat===cat);
-  return `
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+      <div class="row" style="align-items:center;justify-content:space-between">
         <div>
-          <h2 style="margin:0">${catLabel(cat)}</h2>
-          <div class="muted">Mini zählt. Immer.</div>
+          <div style="font-weight:1000;font-size:16px">${cat?.name || "Kategorie"}</div>
+          <div class="muted">Rubriken: groß. Herzen: klein & kompakt.</div>
         </div>
         <button class="btn" onclick="go('kats')">↩︎</button>
       </div>
@@ -498,92 +744,148 @@ function catView(cat){
 
     <div style="height:12px"></div>
 
-    ${items.map(q=>questCard(q)).join('<div style="height:12px"></div>')}
+    <div class="col">
+      ${items.map(q=>{
+        const maxMini = 10;
+        const heartsText = unitsToHeartsText(q.progressUnits);
+        return `
+          <button class="btn rubricBtn big" onclick="openQuest('${q.id}')">
+            <div style="min-width:0">
+              <div class="rubricTitle">${q.title}</div>
+              <div class="rubricStep">${q.step}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+              <div class="badge">♥ ${heartsText}</div>
+              ${miniHearts(q.progressUnits, maxMini)}
+            </div>
+          </button>
+        `;
+      }).join("")}
+    </div>
   `;
 }
 
-function bankView(){
-  const total = Number(state.bank.heartsTotal||0);
-  const n = Math.max(1, Number(state.bank.giftEvery||5));
-  const toNext = n - (total % n || n);
-  const bigAt = Math.max(10, Number(state.bank.bigGoalAt||100));
-  const toBig = bigAt - (total % bigAt || bigAt);
+function questView(){
+  const q = state.quests.find(x=>x.id===state.activeQuestId);
+  if(!q) return `<div class="card">Quest nicht gefunden.</div>`;
 
-  const hist = (state.bank.rewardHistory||[]).slice(-6).reverse();
+  const cat = state.cats.find(c=>c.id===q.cat);
+  const heartsText = unitsToHeartsText(q.progressUnits);
+  const totalText = unitsToHeartsText(state.bank.totalUnits);
+
+  // Buttons: Mini alle 2 Klicks 1 Herz (0.5 je Klick), Normal 1 Herz, Boss 2 Herzen
+  const miniLabel = q.doublePoints ? "Mini +1♥ (doppelt!)" : "Mini +0,5♥";
+  const normalLabel = q.doublePoints ? "Normal +2♥ (doppelt!)" : "Normal +1♥";
+  const bossLabel = q.doublePoints ? "Boss +4♥ (doppelt!)" : "Boss +2♥";
+
+  const miniUnits = q.doublePoints ? (U_HALF*2) : U_HALF;     // 1 oder 2
+  const normalUnits = q.doublePoints ? (U_HEART*2) : U_HEART; // 2 oder 4
+  const bossUnits = q.doublePoints ? (U_BOSS*2) : U_BOSS;     // 4 oder 8
 
   return `
     <div class="card">
-      <h2>Mach-gut-Konto</h2>
-      <div class="big">${total} ♥</div>
-      <div class="muted">Nächstes 🎁 in <b>${toNext}</b> ♥ · Boss-Ziel in <b>${toBig}</b> ♥</div>
-
-      <div class="sep"></div>
-
-      <div class="two">
-        <div>
-          <div class="muted">Geschenk alle X Herzen</div>
-          <input type="number" min="1" step="1" value="${n}"
-            oninput="state.bank.giftEvery=Math.max(1,Number(this.value||5)); saveState(); render();" />
-        </div>
-        <div>
-          <div class="muted">Boss-Ziel bei X Herzen</div>
-          <input type="number" min="10" step="10" value="${bigAt}"
-            oninput="state.bank.bigGoalAt=Math.max(10,Number(this.value||100)); saveState(); render();" />
+      <div class="questTop">
+        <img class="avatar" src="./snuggy_avatar_v3.png" alt="Snuggy">
+        <div style="min-width:0">
+          <p class="qTitle">${q.title}</p>
+          <p class="qSub">${cat?.name || ""} · ${q.step}</p>
         </div>
       </div>
 
+      <div class="sep"></div>
+
+      <div class="scoreRow">
+        <div class="pill">Rubrik: ♥ ${heartsText}</div>
+        <div class="pill">Konto: ♥ ${totalText}</div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="row">
+        <button class="btn green" onclick="addAction('${q.id}', ${miniUnits}, 'mini')">${miniLabel}</button>
+        <button class="btn primary" onclick="addAction('${q.id}', ${normalUnits}, 'normal')">${normalLabel}</button>
+        <button class="btn purple" onclick="addAction('${q.id}', ${bossUnits}, 'boss')">${bossLabel}</button>
+      </div>
+
       <div style="height:10px"></div>
-      <div class="muted">Boss-Text</div>
-      <input type="text" value="${escapeHtml(state.bank.bigGoalText||"")}"
-        oninput="state.bank.bigGoalText=this.value; saveState();" />
+
+      <div class="row">
+        <button class="btn ghost" onclick="undoAction('${q.id}')">↩︎ Undo</button>
+        <button class="btn ghost" onclick="resetQuest('${q.id}')">Rubrik leeren</button>
+        <button class="btn" onclick="openCat('${q.cat}')">↩︎ Rubriken</button>
+      </div>
 
       <div class="sep"></div>
 
-      <h2 style="font-size:14px;margin:0 0 10px">Belohnungen (eine pro Zeile)</h2>
-      <textarea oninput="state.bank.rewards=this.value.split('\\n').map(s=>s.trim()).filter(Boolean); saveState();"
-      >${(state.bank.rewards||[]).join("\n")}</textarea>
+      <div class="muted"><b>Herz-Raster</b> (Mini füllt halb, Normal voll, Boss 2 Herzen)</div>
+      ${questGrid(q.progressUnits, q.gridHearts)}
+    </div>
+  `;
+}
+
+function kontoView(){
+  const hearts = totalHearts();
+  const nextGiftInUnits = UNITS_PER_GIFT - (state.bank.totalUnits % UNITS_PER_GIFT || UNITS_PER_GIFT);
+
+  const bigGoalUnits = (Number(state.bank.bigGoalHearts || 100) * 2);
+  const toBig = bigGoalUnits - (state.bank.totalUnits % bigGoalUnits || bigGoalUnits);
+
+  const hist = (state.bank.giftHistory || []).slice(-6).reverse();
+
+  return `
+    <div class="card">
+      <div style="font-weight:1000;font-size:16px;margin-bottom:6px">Mach-gut-Konto</div>
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <div class="pill">♥ ${unitsToHeartsText(state.bank.totalUnits)}</div>
+        <button class="btn" onclick="openGift()">Geschenk testen 🎁</button>
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="muted">
+        Geschenk alle <b>5 Herzen</b> · nächstes in <b>♥ ${unitsToHeartsText(nextGiftInUnits)}</b><br>
+        Boss-Ziel: <b>${state.bank.bigGoalText}</b> (bei ♥ ${state.bank.bigGoalHearts}) · noch <b>♥ ${unitsToHeartsText(toBig)}</b>
+      </div>
 
       <div class="sep"></div>
 
-      <h2 style="font-size:14px;margin:0 0 10px">Letzte 🎁</h2>
-      ${
-        hist.length ? hist.map(h=>`
-          <div class="pill" style="display:flex;justify-content:space-between;gap:10px;margin:6px 0">
-            <span>${escapeHtml(h.text)}</span>
-            <span class="muted">${new Date(h.t).toLocaleDateString()}</span>
-          </div>
-        `).join("") : `<div class="muted">Noch keine. Snuggy wartet auf das erste Geschenk.</div>`
-      }
+      <div style="font-weight:1000;margin-bottom:6px">Geschenke (Zufall, alle 5 Herzen)</div>
+      <div class="muted">Diese Liste kannst du später easy erweitern.</div>
+      <div class="sep"></div>
+      ${(state.bank.gifts||[]).map(t=>`<div class="card soft" style="padding:10px;margin:8px 0">${t}</div>`).join("")}
+
+      <div class="sep"></div>
+      <div style="font-weight:1000;margin-bottom:6px">Letzte Geschenke</div>
+      ${hist.length ? hist.map(h=>`
+        <div class="card soft" style="padding:10px;margin:8px 0">
+          <div style="font-weight:950">${h.text}</div>
+          <div class="muted" style="margin-top:4px">${new Date(h.t).toLocaleDateString()}</div>
+        </div>
+      `).join("") : `<div class="muted">Noch keine. Kommt automatisch.</div>`}
     </div>
   `;
 }
 
 function settingsView(){
+  const low = !!state.settings.lowMotion;
   return `
     <div class="card">
-      <h2>Einstellungen</h2>
+      <div style="font-weight:1000;font-size:16px;margin-bottom:6px">Einstellungen</div>
+
       <div class="sep"></div>
 
-      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+      <div class="row" style="align-items:center;justify-content:space-between">
         <div>
           <div style="font-weight:950">Wenig Animation</div>
-          <div class="muted">Weniger Reiz, mehr Ruhe.</div>
+          <div class="muted">Mehr Ruhe, weniger Reiz.</div>
         </div>
-        <input type="checkbox" ${state.settings.lowMotion?'checked':''}
+        <input type="checkbox" ${low ? "checked":""}
           onchange="state.settings.lowMotion=this.checked; saveState(); render();" />
       </div>
 
       <div class="sep"></div>
 
-      <button class="btn warn" onclick="resetAll()">Alles zurücksetzen</button>
-      <div class="muted" style="margin-top:8px">Nur wenn wirklich neu anfangen.</div>
-
-      <div class="sep"></div>
-
-      <div class="muted">
-        Push (später optional): Hier kommt später ein Button hin wie „Benachrichtigungen aktivieren“,
-        falls du irgendwann doch Cloudflare Worker/Cron oder einen Dienst nutzt.
-      </div>
+      <button class="btn purple big" onclick="resetAll()">Alles zurücksetzen</button>
+      <div class="muted" style="margin-top:8px">Nur wenn wirklich neu starten.</div>
     </div>
   `;
 }
@@ -591,22 +893,25 @@ function settingsView(){
 function resetAll(){
   if(!confirm("Wirklich alles löschen?")) return;
   state = structuredClone(DEFAULT);
-  saveState(); render();
-  toast("Neu gestartet. Snuggy ist nicht beleidigt.");
+  saveState();
+  render();
 }
 
+/* Render */
 function render(){
   document.documentElement.style.scrollBehavior = state.settings.lowMotion ? "auto" : "smooth";
   const app = document.getElementById("app");
-  if(state.view==="start") app.innerHTML = startView();
-  else if(state.view==="kats") app.innerHTML = catsView();
-  else if(state.view==="cat") app.innerHTML = catView(state.activeCat || "finanzen");
-  else if(state.view==="bank") app.innerHTML = bankView();
-  else if(state.view==="settings") app.innerHTML = settingsView();
+
+  if(state.view === "start") app.innerHTML = startView();
+  else if(state.view === "kats") app.innerHTML = categoriesView();
+  else if(state.view === "cat") app.innerHTML = catView();
+  else if(state.view === "quest") app.innerHTML = questView();
+  else if(state.view === "konto") app.innerHTML = kontoView();
+  else if(state.view === "settings") app.innerHTML = settingsView();
   else app.innerHTML = startView();
 }
 
-/* Service Worker: Offline-App-Shell */
+/* Service Worker (offline-first) */
 if("serviceWorker" in navigator){
   window.addEventListener("load", async ()=>{
     try{ await navigator.serviceWorker.register("./sw.js"); }catch(e){}
