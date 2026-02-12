@@ -568,13 +568,18 @@ function totalHearts(){
 }
 
 /* Gift trigger every 5 hearts */
-function maybeGift(){
-  const u = state.bank.totalUnits;
-  if(u > 0 && u % UNITS_PER_GIFT === 0){
+function maybeGift(prevUnits, newUnits){
+  const prevGifts = Math.floor(prevUnits / UNITS_PER_GIFT);
+  const newGifts  = Math.floor(newUnits / UNITS_PER_GIFT);
+  const diff = newGifts - prevGifts;
+
+  if(diff <= 0) return;
+
+  // Falls du mehrere Schwellen in einem Schritt überspringst:
+  for(let i=0; i<diff; i++){
     openGift();
   }
 }
-
 function openGift(){
   const arr = state.bank.gifts || [];
   const pick = arr.length ? arr[Math.floor(Math.random()*arr.length)] : "Gönn dir was Kleines.";
@@ -614,11 +619,13 @@ function addAction(qid, units, label){
   if(q.doublePoints) units *= 2;
 
   q.actions.push({ t: Date.now(), u: units, label });
+  const prev = state.bank.totalUnits;
+
   q.progressUnits += units;
   state.bank.totalUnits += units;
 
   saveState();
-  maybeGift();
+  maybeGift(prev, state.bank.totalUnits);
   render();
 }
 
