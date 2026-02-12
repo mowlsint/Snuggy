@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-title" content="Snuggy" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- iOS Icons (nicht umbenennen!) -->
+  <!-- iOS Icons (NICHT umbenennen!) -->
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180_v3.png" />
   <link rel="apple-touch-icon" sizes="167x167" href="./icon-167_v3.png" />
   <link rel="apple-touch-icon" sizes="152x152" href="./icon-152_v3.png" />
@@ -24,14 +24,14 @@
 
   <style>
     :root{
-      /* Snuggy Palette (warm + freundlich) */
-      --bg1:#FFE7D6;   /* helles apricot */
-      --bg2:#F7D9C8;   /* warmes beige */
-      --bg3:#EADCF7;   /* sanftes lila */
-      --card:#FFF7F1;  /* cremig */
-      --card2:#FFF1E7; /* leicht orange */
-      --ink:#2A1E1A;   /* dunkelbraun */
-      --muted:#6A4A3A; /* braun gedimmt */
+      /* warm + snuggy-ish */
+      --bg1:#FFE7D6;
+      --bg2:#F7D9C8;
+      --bg3:#EADCF7;
+      --card:#FFF7F1;
+      --card2:#FFF1E7;
+      --ink:#2A1E1A;
+      --muted:#6A4A3A;
       --line:rgba(58,30,20,.18);
       --shadow: 0 10px 24px rgba(60,20,10,.12);
 
@@ -69,28 +69,11 @@
       justify-content:space-between;
       gap:12px;
     }
-    .titleWrap{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-    h1{
-      margin:0;
-      font-size:18px;
-      letter-spacing:.2px;
-    }
-    .subtitle{
-      margin:0;
-      font-size:12px;
-      color:var(--muted);
-      font-weight:700;
-    }
+    .titleWrap{ display:flex; flex-direction:column; gap:2px; }
+    h1{ margin:0; font-size:18px; letter-spacing:.2px; }
+    .subtitle{ margin:0; font-size:12px; color:var(--muted); font-weight:800; }
 
-    main{
-      max-width:820px;
-      margin:0 auto;
-      padding:8px 16px 16px;
-    }
+    main{ max-width:820px; margin:0 auto; padding:8px 16px 16px; }
 
     .card{
       background:rgba(255,247,241,.88);
@@ -100,13 +83,11 @@
       box-shadow:var(--shadow);
       backdrop-filter: blur(6px);
     }
-    .card.soft{
-      background:rgba(255,241,231,.78);
-    }
+    .card.soft{ background:rgba(255,241,231,.78); }
 
     .row{ display:flex; gap:10px; flex-wrap:wrap; }
     .col{ display:flex; flex-direction:column; gap:10px; }
-    .muted{ color:var(--muted); font-size:12px; line-height:1.25; }
+    .muted{ color:var(--muted); font-size:12px; line-height:1.25; font-weight:700; }
     .sep{ height:1px; background:var(--line); margin:12px 0; }
 
     .btn{
@@ -115,7 +96,7 @@
       color:var(--ink);
       padding:14px 14px;
       border-radius:18px;
-      font-weight:900;
+      font-weight:950;
       letter-spacing:.2px;
       cursor:pointer;
       user-select:none;
@@ -123,29 +104,12 @@
       transition: transform .05s ease;
     }
     .btn:active{ transform:scale(.985); }
-    .btn.primary{
-      background:linear-gradient(180deg, var(--orange), var(--orange2));
-      border-color: rgba(120,50,20,.18);
-    }
-    .btn.purple{
-      background:linear-gradient(180deg, #8D6AE0, var(--purple));
-      color:white;
-      border-color: rgba(60,20,120,.25);
-    }
-    .btn.green{
-      background:linear-gradient(180deg, #3ED59A, var(--green));
-      color:#0c2a1c;
-      border-color: rgba(20,80,50,.18);
-    }
-    .btn.ghost{
-      background:rgba(255,255,255,.25);
-    }
-    .btn.big{
-      width:100%;
-      padding:18px 16px;
-      font-size:16px;
-      border-radius:22px;
-    }
+    .btn.primary{ background:linear-gradient(180deg, var(--orange), var(--orange2)); border-color: rgba(120,50,20,.18); }
+    .btn.purple{ background:linear-gradient(180deg, #8D6AE0, var(--purple)); color:white; border-color: rgba(60,20,120,.25); }
+    .btn.green{ background:linear-gradient(180deg, #3ED59A, var(--green)); color:#0c2a1c; border-color: rgba(20,80,50,.18); }
+    .btn.ghost{ background:rgba(255,255,255,.25); }
+    .btn.big{ width:100%; padding:18px 16px; font-size:16px; border-radius:22px; }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
 
     .nav{
       position:fixed; left:0; right:0; bottom:0;
@@ -155,14 +119,10 @@
       border-top:1px solid var(--line);
       backdrop-filter: blur(10px);
     }
-    .nav .row{
-      max-width:820px;
-      margin:0 auto;
-      gap:10px;
-    }
+    .nav .row{ max-width:820px; margin:0 auto; gap:10px; }
     .nav .btn{ flex:1; padding:12px 10px; border-radius:16px; font-size:13px; }
 
-    /* Start: Vollbild Snuggy */
+    /* Start hero */
     .hero{
       overflow:hidden;
       border-radius:24px;
@@ -177,18 +137,10 @@
       object-fit: contain;
       background: linear-gradient(180deg, rgba(255,241,231,.65), rgba(255,231,214,.55));
     }
-    .heroBottom{
-      padding:14px;
-    }
+    .heroBottom{ padding:14px; }
 
-    /* Kategorie Buttons groß */
-    .catGrid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-    }
-
-    /* Rubriken als große Buttons, kompakte Hearts-Anzeige */
+    /* Category & rubric */
+    .catGrid{ display:grid; grid-template-columns:1fr; gap:12px; }
     .rubricBtn{
       display:flex;
       align-items:center;
@@ -197,11 +149,11 @@
       width:100%;
       text-align:left;
     }
-    .rubricTitle{ font-size:15px; font-weight:950; }
-    .rubricStep{ font-size:12px; color:var(--muted); margin-top:4px; font-weight:700; }
+    .rubricTitle{ font-size:15px; font-weight:1000; }
+    .rubricStep{ font-size:12px; color:var(--muted); margin-top:4px; font-weight:800; }
     .badge{
       font-size:12px;
-      font-weight:950;
+      font-weight:1000;
       padding:10px 12px;
       border-radius:999px;
       border:1px solid var(--line);
@@ -209,55 +161,31 @@
       white-space:nowrap;
     }
 
-    /* kleine Herzen (halb/ voll) */
-    .heartsMini{
-      display:flex;
-      gap:4px;
-      align-items:center;
-      justify-content:flex-end;
-      flex-wrap:nowrap;
-    }
+    /* Small hearts preview */
+    .heartsMini{ display:flex; gap:4px; align-items:center; justify-content:flex-end; flex-wrap:nowrap; }
     .h{
-      width:10px;
-      height:10px;
-      border-radius:3px;
+      width:10px; height:10px; border-radius:3px;
       border:1px solid rgba(58,30,20,.22);
       background:rgba(255,255,255,.35);
     }
-    .h.half{
-      background: linear-gradient(90deg, rgba(214,74,83,.9) 50%, rgba(255,255,255,.35) 50%);
-      border-color: rgba(214,74,83,.5);
-    }
-    .h.full{
-      background: rgba(214,74,83,.95);
-      border-color: rgba(214,74,83,.5);
-    }
+    .h.half{ background: linear-gradient(90deg, rgba(214,74,83,.9) 50%, rgba(255,255,255,.35) 50%); border-color: rgba(214,74,83,.5); }
+    .h.full{ background: rgba(214,74,83,.95); border-color: rgba(214,74,83,.5); }
 
-    /* Quest View */
-    .questTop{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
+    /* Quest view */
+    .questTop{ display:flex; align-items:center; gap:12px; }
     .avatar{
       width:54px; height:54px;
       border-radius:18px;
       border:1px solid var(--line);
       background:rgba(255,255,255,.55);
-      flex:0 0 auto;
       object-fit:contain;
       padding:6px;
+      flex:0 0 auto;
     }
-    .qTitle{ margin:0; font-size:18px; font-weight:1000; }
-    .qSub{ margin:4px 0 0; font-size:12px; color:var(--muted); font-weight:800; }
+    .qTitle{ margin:0; font-size:18px; font-weight:1100; }
+    .qSub{ margin:4px 0 0; font-size:12px; color:var(--muted); font-weight:850; }
 
-    .scoreRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-    }
+    .scoreRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
     .pill{
       display:inline-flex;
       align-items:center;
@@ -267,30 +195,32 @@
       border:1px solid var(--line);
       background:rgba(255,255,255,.55);
       font-size:12px;
-      font-weight:950;
+      font-weight:1000;
     }
 
-    /* Herz Raster (kompakt) */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(10, minmax(0,1fr));
-      gap:6px;
-      margin-top:10px;
-    }
+    .grid{ display:grid; grid-template-columns:repeat(10, minmax(0,1fr)); gap:6px; margin-top:10px; }
     .cell{
       aspect-ratio:1/1;
       border-radius:10px;
       border:1px solid rgba(58,30,20,.18);
       background:rgba(255,255,255,.40);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:950;
-      font-size:12px;
-      color:rgba(42,30,26,.55);
     }
-    .cell.half{ background: linear-gradient(90deg, rgba(214,74,83,.9) 50%, rgba(255,255,255,.40) 50%); border-color: rgba(214,74,83,.45); color: rgba(42,30,26,.18);}
-    .cell.full{ background: rgba(214,74,83,.92); border-color: rgba(214,74,83,.45); color: rgba(42,30,26,.0); }
+    .cell.half{ background: linear-gradient(90deg, rgba(214,74,83,.9) 50%, rgba(255,255,255,.40) 50%); border-color: rgba(214,74,83,.45); }
+    .cell.full{ background: rgba(214,74,83,.92); border-color: rgba(214,74,83,.45); }
+
+    /* Bars */
+    .bar{
+      height:12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.35);
+      overflow:hidden;
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(214,74,83,.8), rgba(126,87,194,.65), rgba(243,155,93,.85));
+    }
 
     dialog{
       border:none;
@@ -304,11 +234,7 @@
     }
     dialog::backdrop{ background: rgba(0,0,0,.35); }
 
-    .dlgHead{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
+    .dlgHead{ display:flex; align-items:center; gap:12px; }
     .dlgHead img{
       width:54px; height:54px; border-radius:18px;
       border:1px solid var(--line);
@@ -317,7 +243,43 @@
       padding:6px;
     }
 
-    /* very mobile friendly spacing */
+    /* Boss FX */
+    #dlgBoss{ position:relative; overflow:hidden; }
+    .bossFx{ position:absolute; inset:0; pointer-events:none; }
+    .star{
+      position:absolute; font-size:22px; opacity:0;
+      animation: tw 1.2s ease-in-out infinite;
+      color: rgba(126,87,194,.85);
+    }
+    .s1{left:10%; top:12%; animation-delay:.0s}
+    .s2{left:82%; top:18%; animation-delay:.2s}
+    .s3{left:22%; top:62%; animation-delay:.35s}
+    .s4{left:70%; top:66%; animation-delay:.5s}
+    .s5{left:44%; top:10%; animation-delay:.65s}
+    .s6{left:50%; top:78%; animation-delay:.8s}
+
+    .ring{
+      position:absolute; border-radius:999px;
+      border:3px solid rgba(243,155,93,.55);
+      animation: pop 1.3s ease-out infinite;
+      opacity:0;
+    }
+    .r1{ width:120px; height:120px; left:8%; top:35%; animation-delay:.0s }
+    .r2{ width:160px; height:160px; left:62%; top:30%; animation-delay:.25s; border-color: rgba(126,87,194,.45); }
+    .r3{ width:220px; height:220px; left:32%; top:48%; animation-delay:.5s; border-color: rgba(214,74,83,.35); }
+
+    @keyframes tw{
+      0%{ transform:scale(.8) rotate(0deg); opacity:0 }
+      40%{ opacity:.95 }
+      70%{ opacity:.4 }
+      100%{ transform:scale(1.2) rotate(18deg); opacity:0 }
+    }
+    @keyframes pop{
+      0%{ transform:scale(.6); opacity:0 }
+      30%{ opacity:.65 }
+      100%{ transform:scale(1.15); opacity:0 }
+    }
+
     @media (max-width:420px){
       .grid{ grid-template-columns:repeat(8, minmax(0,1fr)); }
       .nav .btn{ font-size:12px; }
@@ -351,13 +313,13 @@
   <div class="dlgHead">
     <img src="./snuggy_avatar_v3.png" alt="Snuggy" />
     <div>
-      <div style="font-weight:1000;font-size:16px;margin:0">Geschenk 🎁</div>
+      <div style="font-weight:1100;font-size:16px;margin:0">Geschenk 🎁</div>
       <div class="muted">Alle 5 Herzen. Zufall. Lob + kleine Gönnung.</div>
     </div>
   </div>
   <div class="sep"></div>
   <div class="card soft" style="padding:12px">
-    <div id="giftText" style="font-weight:1000"></div>
+    <div id="giftText" style="font-weight:1100"></div>
     <div class="muted" style="margin-top:6px">Gönn dir das. Ohne Debatte.</div>
   </div>
   <div class="row" style="justify-content:flex-end;margin-top:12px">
@@ -370,54 +332,85 @@
   <div class="dlgHead">
     <img src="./snuggy_avatar_v3.png" alt="Snuggy" />
     <div>
-      <div style="font-weight:1000;font-size:16px;margin:0">Tägliche Überraschung ✨</div>
+      <div style="font-weight:1100;font-size:16px;margin:0">Tägliche Überraschung ✨</div>
       <div class="muted">Einmal pro Tag. Vor oder nach der Arbeit.</div>
     </div>
   </div>
   <div class="sep"></div>
   <div class="card soft" style="padding:12px">
-    <div id="surpriseText" style="font-weight:1000"></div>
+    <div id="surpriseText" style="font-weight:1100"></div>
   </div>
   <div class="row" style="justify-content:flex-end;margin-top:12px">
     <button class="btn" onclick="closeDlg('dlgSurprise')">Okay</button>
   </div>
 </dialog>
 
+<!-- Boss Popup -->
+<dialog id="dlgBoss">
+  <div class="bossFx">
+    <span class="star s1">✦</span><span class="star s2">✦</span><span class="star s3">✦</span>
+    <span class="star s4">✦</span><span class="star s5">✦</span><span class="star s6">✦</span>
+    <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+  </div>
+
+  <div class="dlgHead">
+    <img src="./snuggy_avatar_v3.png" alt="Snuggy" />
+    <div>
+      <div style="font-weight:1200;font-size:18px;margin:0">Boss-Ziel erreicht ⭐</div>
+      <div class="muted">100 Herzen. Das ist kein Zufall.</div>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="card soft" style="padding:14px">
+    <div style="font-weight:1200;font-size:18px" id="bossText">
+      Wow, Süße. Jetzt geht es in die Therme!
+    </div>
+  </div>
+
+  <div class="row" style="justify-content:flex-end;margin-top:12px">
+    <button class="btn purple" onclick="closeDlg('dlgBoss')">Yesss</button>
+  </div>
+</dialog>
+
 <script>
 /* =========================================================
-   Snuggy Mach-gut-App v3
-   - Neues Farbschema
-   - Start: Snuggy Vollbild + Jetzt spielen
-   - Kategorien -> Rubriken (große Buttons)
-   - Herzsystem: Einheiten (halbe Herzen)
-       Mini = 1 Einheit (0.5 Herz)  -> alle 2 Minis = 1 Herz
-       Normal = 2 Einheiten (1 Herz)
-       Boss = 4 Einheiten (2 Herzen)
-   - Geschenk alle 5 Herzen (=10 Einheiten)
-   - Tägliche Überraschung: 1x/Tag
+   Snuggy Mach-gut-App (index.html) – v3.2
+   - Friendly colors, mobile-first
+   - Kategorien -> Rubriken
+   - Units-System (halbe Herzen):
+       Mini = 1 Unit (0.5 ♥)
+       Normal = 2 Units (1 ♥)
+       Boss = 4 Units (2 ♥)
+     doublePoints-Quest verdoppelt die Units
+   - Geschenk alle 5 ♥ = 10 Units
+     !!! Jetzt korrekt: zählt seit dem letzten Geschenk (giftUnitsProgress)
+   - Boss Popup bei 100 ♥ = 200 Units
+   - Konto Screen: Boss-Badge + Boss-Fortschritt
    ========================================================= */
 
 const KEY = "snuggy_v3_state";
 
-/* Herz-Units */
-const U_HALF = 1;         // 0.5 Herz
-const U_HEART = 2;        // 1 Herz
-const U_BOSS = 4;         // 2 Herzen
+const U_HALF = 1;
+const U_HEART = 2;
+const U_BOSS = 4;
 
-const UNITS_PER_GIFT = 10; // 5 Herzen
+const UNITS_PER_GIFT = 10;  // 5 Herzen
+const BOSS_HEARTS_DEFAULT = 100;
+const BOSS_UNITS = BOSS_HEARTS_DEFAULT * 2;
 
 const DEFAULT = {
   view: "start",
   activeCat: null,
   activeQuestId: null,
 
-  settings: {
-    lowMotion: false
-  },
+  settings: { lowMotion: false },
 
   bank: {
-    totalUnits: 0,             // in halben Herzen
-    bigGoalHearts: 100,        // Boss Ziel: 100 Herzen
+    totalUnits: 0,
+    giftUnitsProgress: 0, // Units seit letztem Geschenk
+    bigGoalHearts: 100,
     bigGoalText: "Special Day / Therme",
     gifts: [
       "„Du machst das großartig, Baby“ – Gönn dir: Lieblingssnack.",
@@ -431,7 +424,7 @@ const DEFAULT = {
   },
 
   surprise: {
-    lastDate: null, // "YYYY-MM-DD"
+    lastDate: null,
     texts: [
       "Snuggy sagt: „Vor der Arbeit: Rücken gerade. Du gehst da rein wie ein Champion.“",
       "Snuggy sagt: „Du bist wach, du bist da — das reicht, um zu gewinnen. Los.“",
@@ -461,7 +454,6 @@ const DEFAULT = {
     { id:"haushalt", name:"Haushalt", color:"ghost" }
   ],
 
-  /* Rubriken/Quests: jede hat progressUnits und actions (für Undo) */
   quests: [
     // FINANZEN
     { id:"fin_a", cat:"finanzen", title:"Kontocheck", step:"Banking öffnen – ansehen – fertig", gridHearts: 20, progressUnits: 0, actions:[] },
@@ -471,13 +463,13 @@ const DEFAULT = {
     // FREIZEIT
     { id:"free_a", cat:"freizeit", title:"Frische Luft", step:"Schuhe an – nur kurz raus", gridHearts: 20, progressUnits: 0, actions:[] },
     { id:"free_b", cat:"freizeit", title:"Gym", step:"Tasche packen – auftauchen ist der Erfolg", gridHearts: 20, progressUnits: 0, actions:[] },
-    { id:"free_c", cat:"freizeit", title:"Ritual", step:"Regelmäßiges Ritual reicht (TV/Podcast)", gridHearts: 20, progressUnits: 20?0:0, actions:[] }, /* trick to keep linter quiet */
+    { id:"free_c", cat:"freizeit", title:"Ritual", step:"Regelmäßiges Ritual reicht (TV/Podcast)", gridHearts: 20, progressUnits: 0, actions:[] },
     { id:"free_d", cat:"freizeit", title:"Joggen", step:"Schuhe an und fertig", gridHearts: 20, progressUnits: 0, actions:[] },
 
     // GESUNDHEIT
     { id:"health_a", cat:"gesundheit", title:"Arzttermin gemacht", step:"Anruf genügt", gridHearts: 20, progressUnits: 0, actions:[] },
     { id:"health_b", cat:"gesundheit", title:"Protein", step:"Jedes Gramm zählt", gridHearts: 20, progressUnits: 0, actions:[] },
-    { id:"health_c", cat:"gesundheit", title:"Frühstück gehabt", step:"Anti-Hangry Modus", gridHearts: 20, progressUnits: 20?0:0, actions:[] },
+    { id:"health_c", cat:"gesundheit", title:"Frühstück gehabt", step:"Anti-Hangry Modus", gridHearts: 20, progressUnits: 0, actions:[] },
     { id:"health_d", cat:"gesundheit", title:"Tag ohne Süßigkeit", step:"Entschädigung: doppelte Punkte", gridHearts: 20, progressUnits: 0, actions:[], doublePoints:true },
 
     // HAUSHALT
@@ -503,7 +495,6 @@ function loadState(){
     const s = JSON.parse(localStorage.getItem(KEY));
     if(!s) return structuredClone(DEFAULT);
 
-    // Mergen, damit Updates robust bleiben
     const merged = {
       ...structuredClone(DEFAULT),
       ...s,
@@ -514,12 +505,17 @@ function loadState(){
       quests: (s.quests && s.quests.length) ? s.quests : structuredClone(DEFAULT.quests)
     };
 
-    // ensure quest fields exist
     for(const q of merged.quests){
       if(typeof q.progressUnits !== "number") q.progressUnits = 0;
       if(!Array.isArray(q.actions)) q.actions = [];
       if(typeof q.gridHearts !== "number") q.gridHearts = 20;
     }
+
+    // IMPORTANT: Geschenkprogress kompatibel machen
+    if(typeof merged.bank.giftUnitsProgress !== "number"){
+      merged.bank.giftUnitsProgress = (merged.bank.totalUnits || 0) % UNITS_PER_GIFT;
+    }
+
     return merged;
   }catch(e){
     return structuredClone(DEFAULT);
@@ -527,7 +523,6 @@ function loadState(){
 }
 
 let state = loadState();
-
 function saveState(){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
 function go(view){
@@ -559,27 +554,20 @@ function closeDlg(id){
 /* Units helpers */
 function unitsToHeartsText(units){
   const hearts = units / 2;
-  // show .5 if needed
   return Number.isInteger(hearts) ? `${hearts}` : `${hearts.toFixed(1)}`;
 }
+function totalHearts(){ return state.bank.totalUnits / 2; }
 
-function totalHearts(){
-  return state.bank.totalUnits / 2;
-}
+/* Gift logic: zählt seit dem letzten Geschenk */
+function maybeGift(unitsAdded){
+  state.bank.giftUnitsProgress += unitsAdded;
 
-/* Gift trigger every 5 hearts */
-function maybeGift(prevUnits, newUnits){
-  const prevGifts = Math.floor(prevUnits / UNITS_PER_GIFT);
-  const newGifts  = Math.floor(newUnits / UNITS_PER_GIFT);
-  const diff = newGifts - prevGifts;
-
-  if(diff <= 0) return;
-
-  // Falls du mehrere Schwellen in einem Schritt überspringst:
-  for(let i=0; i<diff; i++){
+  while(state.bank.giftUnitsProgress >= UNITS_PER_GIFT){
+    state.bank.giftUnitsProgress -= UNITS_PER_GIFT;
     openGift();
   }
 }
+
 function openGift(){
   const arr = state.bank.gifts || [];
   const pick = arr.length ? arr[Math.floor(Math.random()*arr.length)] : "Gönn dir was Kleines.";
@@ -593,39 +581,49 @@ function openGift(){
 }
 
 /* Surprise once per day */
-function canUseSurprise(){
-  return state.surprise.lastDate !== todayISO();
-}
-
+function canUseSurprise(){ return state.surprise.lastDate !== todayISO(); }
 function useSurprise(){
   if(!canUseSurprise()) return;
-
   const texts = state.surprise.texts || [];
   const pick = texts.length ? texts[Math.floor(Math.random()*texts.length)] : "Snuggy sagt: „Du machst das.“";
   document.getElementById("surpriseText").textContent = pick;
-
   state.surprise.lastDate = todayISO();
   saveState();
-
   document.getElementById("dlgSurprise").showModal();
 }
 
+/* Boss logic: Popup bei Überschreiten von 100 Herzen (200 Units) */
+function maybeBoss(prevUnits, newUnits){
+  const bossUnits = (Number(state.bank.bigGoalHearts || BOSS_HEARTS_DEFAULT) * 2);
+  const prevBoss = Math.floor(prevUnits / bossUnits);
+  const newBoss  = Math.floor(newUnits / bossUnits);
+  if(newBoss > prevBoss){
+    document.getElementById("bossText").textContent = "Wow, Süße. Jetzt geht es in die Therme!";
+    document.getElementById("dlgBoss").showModal();
+  }
+}
+
 /* Quest actions */
-function addAction(qid, units, label){
+function addAction(qid, baseUnits, label){
   const q = state.quests.find(x=>x.id===qid);
   if(!q) return;
 
-  // doublePoints quest
+  let units = baseUnits;
   if(q.doublePoints) units *= 2;
 
   q.actions.push({ t: Date.now(), u: units, label });
-  const prev = state.bank.totalUnits;
-
   q.progressUnits += units;
+
+  const prevTotal = state.bank.totalUnits;
   state.bank.totalUnits += units;
 
+  // gift progress is independent of total
+  maybeGift(units);
+
+  // boss popup check
+  maybeBoss(prevTotal, state.bank.totalUnits);
+
   saveState();
-  maybeGift(prev, state.bank.totalUnits);
   render();
 }
 
@@ -635,8 +633,12 @@ function undoAction(qid){
 
   const last = q.actions.pop();
   const u = Number(last.u||0);
+
   q.progressUnits = Math.max(0, q.progressUnits - u);
   state.bank.totalUnits = Math.max(0, state.bank.totalUnits - u);
+
+  // best effort: also reduce gift progress (can’t “ungeben” Geschenke rückgängig machen)
+  state.bank.giftUnitsProgress = Math.max(0, (state.bank.giftUnitsProgress || 0) - u);
 
   saveState();
   render();
@@ -645,17 +647,15 @@ function undoAction(qid){
 function resetQuest(qid){
   const q = state.quests.find(x=>x.id===qid);
   if(!q) return;
-
-  // Schamfrei: wir resetten nur Quest-Progress, nicht die Bank.
+  // Schamfrei: nur Rubrik reset, Bank bleibt.
   q.progressUnits = 0;
   q.actions = [];
   saveState();
   render();
 }
 
-/* UI components */
+/* UI parts */
 function miniHearts(units, maxHearts=10){
-  // show up to maxHearts hearts (each heart = 2 units)
   const maxUnits = maxHearts * 2;
   const shownUnits = Math.min(units, maxUnits);
 
@@ -670,7 +670,6 @@ function miniHearts(units, maxHearts=10){
 }
 
 function questGrid(units, gridHearts){
-  // gridHearts hearts = gridHearts * 2 units
   const totalSlots = gridHearts;
   let html = `<div class="grid">`;
   for(let i=0;i<totalSlots;i++){
@@ -684,14 +683,12 @@ function questGrid(units, gridHearts){
 
 /* Views */
 function startView(){
-  const hearts = totalHearts();
-  const nextGiftInUnits = UNITS_PER_GIFT - (state.bank.totalUnits % UNITS_PER_GIFT || UNITS_PER_GIFT);
-  const nextGiftInHearts = nextGiftInUnits / 2;
+  const nextGiftInUnits = UNITS_PER_GIFT - (state.bank.giftUnitsProgress || 0);
 
   const surpriseBtn = canUseSurprise()
     ? `<button class="btn purple big" onclick="useSurprise()">Tägliche Überraschung ✨</button>
        <div class="muted" style="margin-top:8px">Einmal am Tag. Vor oder nach der Arbeit.</div>`
-    : `<button class="btn ghost big" disabled style="opacity:.55;cursor:not-allowed">Überraschung schon genutzt ✅</button>
+    : `<button class="btn ghost big" disabled>Überraschung schon genutzt ✅</button>
        <div class="muted" style="margin-top:8px">Morgen gibt’s die nächste.</div>`;
 
   return `
@@ -719,7 +716,7 @@ function startView(){
 function categoriesView(){
   return `
     <div class="card">
-      <h2 style="margin:0 0 8px;font-size:16px;font-weight:1000">Kategorien</h2>
+      <h2 style="margin:0 0 8px;font-size:16px;font-weight:1100">Kategorien</h2>
       <div class="muted">Tippe eine Kategorie → dann siehst du die Rubriken (große Buttons).</div>
     </div>
 
@@ -742,7 +739,7 @@ function catView(){
     <div class="card">
       <div class="row" style="align-items:center;justify-content:space-between">
         <div>
-          <div style="font-weight:1000;font-size:16px">${cat?.name || "Kategorie"}</div>
+          <div style="font-weight:1100;font-size:16px">${cat?.name || "Kategorie"}</div>
           <div class="muted">Rubriken: groß. Herzen: klein & kompakt.</div>
         </div>
         <button class="btn" onclick="go('kats')">↩︎</button>
@@ -753,7 +750,6 @@ function catView(){
 
     <div class="col">
       ${items.map(q=>{
-        const maxMini = 10;
         const heartsText = unitsToHeartsText(q.progressUnits);
         return `
           <button class="btn rubricBtn big" onclick="openQuest('${q.id}')">
@@ -763,7 +759,7 @@ function catView(){
             </div>
             <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
               <div class="badge">♥ ${heartsText}</div>
-              ${miniHearts(q.progressUnits, maxMini)}
+              ${miniHearts(q.progressUnits, 10)}
             </div>
           </button>
         `;
@@ -777,17 +773,14 @@ function questView(){
   if(!q) return `<div class="card">Quest nicht gefunden.</div>`;
 
   const cat = state.cats.find(c=>c.id===q.cat);
-  const heartsText = unitsToHeartsText(q.progressUnits);
-  const totalText = unitsToHeartsText(state.bank.totalUnits);
 
-  // Buttons: Mini alle 2 Klicks 1 Herz (0.5 je Klick), Normal 1 Herz, Boss 2 Herzen
+  const miniUnits = U_HALF;
+  const normalUnits = U_HEART;
+  const bossUnits = U_BOSS;
+
   const miniLabel = q.doublePoints ? "Mini +1♥ (doppelt!)" : "Mini +0,5♥";
   const normalLabel = q.doublePoints ? "Normal +2♥ (doppelt!)" : "Normal +1♥";
   const bossLabel = q.doublePoints ? "Boss +4♥ (doppelt!)" : "Boss +2♥";
-
-  const miniUnits = q.doublePoints ? (U_HALF*2) : U_HALF;     // 1 oder 2
-  const normalUnits = q.doublePoints ? (U_HEART*2) : U_HEART; // 2 oder 4
-  const bossUnits = q.doublePoints ? (U_BOSS*2) : U_BOSS;     // 4 oder 8
 
   return `
     <div class="card">
@@ -802,8 +795,8 @@ function questView(){
       <div class="sep"></div>
 
       <div class="scoreRow">
-        <div class="pill">Rubrik: ♥ ${heartsText}</div>
-        <div class="pill">Konto: ♥ ${totalText}</div>
+        <div class="pill">Rubrik: ♥ ${unitsToHeartsText(q.progressUnits)}</div>
+        <div class="pill">Konto: ♥ ${unitsToHeartsText(state.bank.totalUnits)}</div>
       </div>
 
       <div style="height:12px"></div>
@@ -824,47 +817,80 @@ function questView(){
 
       <div class="sep"></div>
 
-      <div class="muted"><b>Herz-Raster</b> (Mini füllt halb, Normal voll, Boss 2 Herzen)</div>
+      <div class="muted"><b>Herz-Raster</b> (Mini halb, Normal voll, Boss 2 Herzen)</div>
       ${questGrid(q.progressUnits, q.gridHearts)}
     </div>
   `;
 }
 
 function kontoView(){
-  const hearts = totalHearts();
-  const nextGiftInUnits = UNITS_PER_GIFT - (state.bank.totalUnits % UNITS_PER_GIFT || UNITS_PER_GIFT);
+  const nextGiftInUnits = UNITS_PER_GIFT - (state.bank.giftUnitsProgress || 0);
 
-  const bigGoalUnits = (Number(state.bank.bigGoalHearts || 100) * 2);
-  const toBig = bigGoalUnits - (state.bank.totalUnits % bigGoalUnits || bigGoalUnits);
+  const bossHearts = Number(state.bank.bigGoalHearts || BOSS_HEARTS_DEFAULT);
+  const bossUnits = bossHearts * 2;
+
+  const totalU = state.bank.totalUnits || 0;
+  const bossProgressUnits = totalU % bossUnits;
+  const bossProgressHearts = bossProgressUnits / 2;
+  const bossToGoHearts = (bossUnits - bossProgressUnits) / 2;
+
+  const bossReached = Math.floor(totalU / bossUnits) >= 1;
+  const bossPct = Math.min(100, (bossProgressUnits / bossUnits) * 100);
 
   const hist = (state.bank.giftHistory || []).slice(-6).reverse();
 
   return `
     <div class="card">
-      <div style="font-weight:1000;font-size:16px;margin-bottom:6px">Mach-gut-Konto</div>
       <div class="row" style="align-items:center;justify-content:space-between">
-        <div class="pill">♥ ${unitsToHeartsText(state.bank.totalUnits)}</div>
-        <button class="btn" onclick="openGift()">Geschenk testen 🎁</button>
+        <div>
+          <div style="font-weight:1200;font-size:16px;margin-bottom:4px">Mach-gut-Konto</div>
+          <div class="muted">Geschenk alle 5 ♥ · Boss bei ${bossHearts} ♥</div>
+        </div>
+
+        ${bossReached
+          ? `<button class="btn purple" onclick="document.getElementById('dlgBoss').showModal()">⭐ Boss!</button>`
+          : `<div class="pill">⭐ Boss: ♥ ${bossProgressHearts.toFixed(0)}/${bossHearts}</div>`
+        }
       </div>
 
       <div style="height:10px"></div>
-      <div class="muted">
-        Geschenk alle <b>5 Herzen</b> · nächstes in <b>♥ ${unitsToHeartsText(nextGiftInUnits)}</b><br>
-        Boss-Ziel: <b>${state.bank.bigGoalText}</b> (bei ♥ ${state.bank.bigGoalHearts}) · noch <b>♥ ${unitsToHeartsText(toBig)}</b>
+
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <div class="pill">Konto: ♥ ${unitsToHeartsText(totalU)}</div>
+        <div class="pill">Nächstes Geschenk in: ♥ ${unitsToHeartsText(nextGiftInUnits)}</div>
       </div>
 
       <div class="sep"></div>
 
-      <div style="font-weight:1000;margin-bottom:6px">Geschenke (Zufall, alle 5 Herzen)</div>
-      <div class="muted">Diese Liste kannst du später easy erweitern.</div>
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <div style="font-weight:1100">Boss-Ziel: ${state.bank.bigGoalText}</div>
+        <div class="badge">${bossReached ? "⭐ Erreicht!" : `Noch ♥ ${bossToGoHearts.toFixed(0)}`}</div>
+      </div>
+      <div style="height:8px"></div>
+      <div class="bar" aria-label="Boss Fortschritt">
+        <div style="width:${bossPct}%"></div>
+      </div>
+      <div class="muted" style="margin-top:8px">
+        Wenn du die 100 ♥ knackst: <b>Pop-up mit Sternchen & Kringeln</b> und Therme-Ansage.
+      </div>
+
       <div class="sep"></div>
+
+      <div class="row">
+        <button class="btn" onclick="openGift()">Geschenk testen 🎁</button>
+      </div>
+
+      <div class="sep"></div>
+
+      <div style="font-weight:1100;margin-bottom:6px">Geschenke (Zufall)</div>
       ${(state.bank.gifts||[]).map(t=>`<div class="card soft" style="padding:10px;margin:8px 0">${t}</div>`).join("")}
 
       <div class="sep"></div>
-      <div style="font-weight:1000;margin-bottom:6px">Letzte Geschenke</div>
+
+      <div style="font-weight:1100;margin-bottom:6px">Letzte Geschenke</div>
       ${hist.length ? hist.map(h=>`
         <div class="card soft" style="padding:10px;margin:8px 0">
-          <div style="font-weight:950">${h.text}</div>
+          <div style="font-weight:1000">${h.text}</div>
           <div class="muted" style="margin-top:4px">${new Date(h.t).toLocaleDateString()}</div>
         </div>
       `).join("") : `<div class="muted">Noch keine. Kommt automatisch.</div>`}
@@ -876,13 +902,13 @@ function settingsView(){
   const low = !!state.settings.lowMotion;
   return `
     <div class="card">
-      <div style="font-weight:1000;font-size:16px;margin-bottom:6px">Einstellungen</div>
+      <div style="font-weight:1200;font-size:16px;margin-bottom:6px">Einstellungen</div>
 
       <div class="sep"></div>
 
       <div class="row" style="align-items:center;justify-content:space-between">
         <div>
-          <div style="font-weight:950">Wenig Animation</div>
+          <div style="font-weight:1000">Wenig Animation</div>
           <div class="muted">Mehr Ruhe, weniger Reiz.</div>
         </div>
         <input type="checkbox" ${low ? "checked":""}
