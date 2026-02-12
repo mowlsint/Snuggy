@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Snuggy – schamfreie Mini-Quests für Haushalt, Finanzen & Freizeit (offline-first)." />
+
+  <!-- iOS: Standalone/Web-App Feeling -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Snuggy" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- iOS Icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="./icon-167.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="./icon-152.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="./icon-120.png" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+
+  <title>Snuggy – Mach-gut-App</title>
+
+  <style>
+    :root{
+      --bg:#0b1220; --card:#0f172a; --ink:#e5e7eb; --muted:#9ca3af;
+      --line:#23314d; --ok:#22c55e; --warn:#f59e0b; --blue:#1d4ed8;
+      --r:18px; --pad:14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,#050913,#0b1220);
+      color:var(--ink);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      -webkit-font-smoothing:antialiased;
+      padding-bottom: calc(84px + env(safe-area-inset-bottom));
+    }
+    header{padding:18px 16px 10px}
+    h1{margin:0;font-size:18px;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.25}
+
+    main{padding:10px 16px 16px;max-width:760px;margin:0 auto}
+
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .card{
+      background:rgba(15,23,42,.92);
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      padding:var(--pad);
+      box-shadow:var(--shadow);
+    }
+    .card h2{margin:0 0 10px;font-size:14px}
+    .muted{color:var(--muted);font-size:12px;line-height:1.25}
+    .sep{height:1px;background:var(--line);margin:12px 0}
+
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(2,6,23,.35);font-size:12px;color:var(--muted);
+    }
+    .big{font-size:22px;font-weight:900}
+
+    .btn{
+      border:1px solid var(--line);
+      background:rgba(2,6,23,.35);
+      color:var(--ink);
+      padding:12px 14px;
+      border-radius:16px;
+      font-weight:850;
+      letter-spacing:.2px;
+      cursor:pointer;
+      user-select:none;
+      transition:transform .05s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.primary{background:linear-gradient(180deg,#1d4ed8,#1e40af);border-color:#1e3a8a}
+    .btn.ok{background:linear-gradient(180deg,#16a34a,#15803d);border-color:#14532d}
+    .btn.warn{background:linear-gradient(180deg,#f59e0b,#b45309);border-color:#78350f}
+    .btn.ghost{background:transparent}
+
+    .snuggy{
+      width:48px;height:48px;border-radius:16px;
+      border:1px solid var(--line);background:rgba(2,6,23,.35);
+      flex:0 0 auto;
+    }
+    .snuggyMini{
+      width:34px;height:34px;border-radius:14px;
+      border:1px solid var(--line);background:rgba(2,6,23,.35);
+      flex:0 0 auto;margin-top:2px;
+    }
+
+    .nav{
+      position:fixed;left:0;right:0;bottom:0;
+      background:rgba(2,6,23,.86);
+      border-top:1px solid var(--line);
+      padding:10px 12px;
+      padding-bottom: calc(10px + env(safe-area-inset-bottom));
+      backdrop-filter:blur(10px);
+    }
+    .nav .row{max-width:760px;margin:0 auto}
+    .nav .btn{flex:1}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(5, minmax(0,1fr));
+      gap:8px;margin-top:10px;
+    }
+    .cell{
+      aspect-ratio:1/1;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(2,6,23,.35);
+      color:var(--muted);
+      font-weight:900;
+      user-select:none;
+    }
+    .cell.done{
+      background:rgba(34,197,94,.12);
+      border-color:rgba(34,197,94,.45);
+      color:var(--ink);
+    }
+
+    .qbar{
+      height:10px;border-radius:999px;
+      background:rgba(2,6,23,.45);
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+    .qbar > div{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#60a5fa)}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:520px){ .two{grid-template-columns:1fr} }
+
+    input[type="number"], input[type="text"], textarea{
+      width:100%;padding:10px 12px;border-radius:14px;
+      border:1px solid var(--line);background:rgba(2,6,23,.35);
+      color:var(--ink);outline:none;
+    }
+    textarea{min-height:90px;resize:vertical}
+
+    dialog{
+      border:none;border-radius:20px;padding:16px;
+      background:rgba(15,23,42,.98);color:var(--ink);
+      max-width:560px;width:calc(100% - 24px);
+      border:1px solid var(--line);box-shadow:var(--shadow);
+    }
+    dialog::backdrop{background:rgba(0,0,0,.55)}
+  </style>
+</head>
+
+<body>
+<header>
+  <div style="display:flex;gap:12px;align-items:center">
+    <img src="./snuggy.png" alt="Snuggy" class="snuggy">
+    <div>
+      <h1>Snuggy – Mach-gut-App</h1>
+      <div class="sub">Mini zählt. Scham raus. Spiel an.</div>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<div class="nav">
+  <div class="row">
+    <button class="btn primary" onclick="go('start')">Start</button>
+    <button class="btn" onclick="go('kats')">Kategorien</button>
+    <button class="btn" onclick="go('bank')">Konto</button>
+    <button class="btn ghost" onclick="go('settings')">⚙️</button>
+  </div>
+</div>
+
+<dialog id="dlgReward">
+  <h2 style="margin:0 0 8px;font-size:16px">Überraschung 🎁</h2>
+  <div style="display:flex;gap:12px;align-items:center;margin:8px 0 12px">
+    <img src="./snuggy.png" alt="Snuggy" style="width:56px;height:56px;border-radius:18px;border:1px solid var(--line);background:rgba(2,6,23,.35)">
+    <div class="muted">Snuggy liefert. Kein schlechtes Gewissen dabei.</div>
+  </div>
+  <div class="card" style="padding:12px;margin:0 0 12px;background:rgba(2,6,23,.35)">
+    <div id="rewardText" style="font-weight:900"></div>
+    <div id="rewardHint" class="muted" style="margin-top:6px"></div>
+  </div>
+  <div class="row" style="justify-content:flex-end">
+    <button class="btn" onclick="closeReward()">Okay</button>
+  </div>
+</dialog>
+
+<script>
+/* =========================
+   Snuggy MVP (offline-first)
+   ========================= */
+
+const KEY = "snuggy_app_v2";
+
+/** Default: klein, stabil, iPhone-sicher */
+const DEFAULT = {
+  view: "start",
+  activeCat: "finanzen",
+
+  settings: {
+    lowMotion: false
+  },
+
+  bank: {
+    heartsTotal: 0,
+    giftEvery: 5,
+    bigGoalAt: 100,
+    bigGoalText: "Großes Ziel: Special-Day / Sauna / Lieblingsort",
+    rewards: [
+      "10 Minuten Lieblingsmusik.",
+      "Tee/Wasser holen + 5 tiefe Atemzüge.",
+      "15 Minuten guilt-free Serie/YouTube.",
+      "2 Minuten vor die Tür. Das zählt.",
+      "Eine Sache hübsch machen (Licht/Decke/Kerze).",
+      "Lieblingssnack klein.",
+      "Bad/Dusche kurz & warm."
+    ],
+    rewardHistory: []
+  },
+
+  // Minimal: je Kategorie ein paar Quests, leicht erweiterbar später
+  quests: [
+    { id:"fin-konto", cat:"finanzen", title:"Konto kurz checken (2 Min)", gridSize: 15, marks:[], firstStep:"Banking öffnen → Stand ansehen → fertig." },
+    { id:"fin-impuls", cat:"finanzen", title:"Impuls-Kauf stoppen", gridSize: 21, marks:[], firstStep:"10 Minuten warten. Wunsch notieren (optional)." },
+
+    { id:"free-luft", cat:"freizeit", title:"Frische Luft", gridSize: 15, marks:[], firstStep:"Schuhe an → nur kurz raus zählt schon." },
+    { id:"free-gym", cat:"freizeit", title:"Gym (Mini zählt!)", gridSize: 21, marks:[], firstStep:"Tasche packen → auftauchen ist Erfolg." },
+
+    { id:"home-muell", cat:"haushalt", title:"Müll raus", gridSize: 30, marks:[], firstStep:"Einen Beutel nehmen. Nur den." },
+    { id:"home-5teile", cat:"haushalt", title:"Küche: 5 Teile", gridSize: 21, marks:[], firstStep:"5 Dinge weg. Stop nach 5." }
+  ]
+};
+
+let state = loadState();
+
+function loadState(){
+  try{
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if(!s) return structuredClone(DEFAULT);
+    return {
+      ...structuredClone(DEFAULT),
+      ...s,
+      settings: { ...structuredClone(DEFAULT.settings), ...(s.settings||{}) },
+      bank: { ...structuredClone(DEFAULT.bank), ...(s.bank||{}) },
+      quests: (s.quests && s.quests.length) ? s.quests : structuredClone(DEFAULT.quests)
+    };
+  }catch(e){
+    return structuredClone(DEFAULT);
+  }
+}
+function saveState(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+}
+
+function catLabel(cat){
+  return cat==="finanzen" ? "1 Finanzen" : cat==="freizeit" ? "2 Freizeit" : "3 Haushalt";
+}
+
+function snuggyLine(){
+  const lines = [
+    "Mini zählt. Wirklich.",
+    "Ein Schritt ist ein Schritt. Kein Urteil.",
+    "Heute klein gewinnen ist völlig okay.",
+    "Wir spielen, wir strafen nicht.",
+    "Wenn’s schwer ist: kleiner gewinnen.",
+    "Regelmäßigkeit > Heldentum."
+  ];
+  return lines[Math.floor(Math.random()*lines.length)];
+}
+
+/* Navigation */
+function go(view){ state.view = view; saveState(); render(); }
+function openCat(cat){ state.activeCat = cat; state.view="cat"; saveState(); render(); }
+
+/* Hearts logic: Mini/Normal/Boss = 1/2/3 Herzen */
+function nextFreeIndex(q){
+  const used = new Set((q.marks||[]).map(m=>m.i));
+  for(let i=1;i<=q.gridSize;i++){
+    if(!used.has(i)) return i;
+  }
+  return null;
+}
+function addHeart(qid, points){
+  const q = state.quests.find(x=>x.id===qid);
+  if(!q) return;
+
+  const idx = nextFreeIndex(q);
+  if(idx === null){
+    toast("Raster voll. Du kannst es (schamfrei) leeren.");
+    return;
+  }
+
+  q.marks.push({ i: idx, t: Date.now(), p: points });
+  state.bank.heartsTotal += points;
+
+  // Geschenk-Trigger
+  const n = Math.max(1, Number(state.bank.giftEvery||5));
+  if(state.bank.heartsTotal > 0 && state.bank.heartsTotal % n === 0){
+    openReward(false);
+  }
+  const bigAt = Math.max(10, Number(state.bank.bigGoalAt||100));
+  if(state.bank.heartsTotal > 0 && state.bank.heartsTotal % bigAt === 0){
+    openReward(true);
+  }
+
+  saveState(); render();
+}
+function undoLast(qid){
+  const q = state.quests.find(x=>x.id===qid);
+  if(!q || !q.marks?.length) return;
+  const last = q.marks.pop();
+  state.bank.heartsTotal = Math.max(0, state.bank.heartsTotal - Number(last.p||1));
+  saveState(); render();
+  toast("Undo.");
+}
+function resetQuest(qid){
+  const q = state.quests.find(x=>x.id===qid);
+  if(!q) return;
+  q.marks = [];
+  saveState(); render();
+  toast("Raster geleert (Bank bleibt schamfrei).");
+}
+
+/* Rewards */
+function pickReward(){
+  const arr = state.bank.rewards || [];
+  if(!arr.length) return "Du darfst dir jetzt etwas Kleines gönnen.";
+  return arr[Math.floor(Math.random()*arr.length)];
+}
+function openReward(big){
+  const text = big ? (state.bank.bigGoalText || "Großes Ziel erreicht!") : pickReward();
+  document.getElementById("rewardText").textContent = text;
+  document.getElementById("rewardHint").textContent = big
+    ? "Boss-Meilenstein: mach’s dir richtig gut."
+    : "Kleine Belohnungen halten Systeme am Leben.";
+
+  state.bank.rewardHistory = state.bank.rewardHistory || [];
+  state.bank.rewardHistory.push({ t: Date.now(), text, big: !!big });
+  saveState();
+
+  document.getElementById("dlgReward").showModal();
+}
+function closeReward(){ document.getElementById("dlgReward").close(); render(); }
+
+/* Toast */
+let toastTimer=null;
+function toast(msg){
+  clearTimeout(toastTimer);
+  const el = document.createElement("div");
+  el.className="card";
+  el.style.position="fixed";
+  el.style.left="12px";
+  el.style.right="12px";
+  el.style.bottom="calc(88px + env(safe-area-inset-bottom))";
+  el.style.zIndex="9999";
+  el.style.padding="12px";
+  el.style.maxWidth="760px";
+  el.style.margin="0 auto";
+  el.innerHTML = `
+    <div style="display:flex;gap:10px;align-items:flex-start">
+      <img src="./snuggy.png" alt="Snuggy" style="width:36px;height:36px;border-radius:14px;border:1px solid var(--line);background:rgba(2,6,23,.35)">
+      <div>
+        <div style="font-weight:900;margin-bottom:4px">Snuggy</div>
+        <div class="muted">${escapeHtml(msg)}</div>
+        <div class="muted" style="margin-top:6px;opacity:.9">„${escapeHtml(snuggyLine())}“</div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(el);
+  toastTimer=setTimeout(()=>el.remove(), 1700);
+}
+
+/* Views */
+function startView(){
+  const total = Number(state.bank.heartsTotal||0);
+  const n = Math.max(1, Number(state.bank.giftEvery||5));
+  const toNext = n - (total % n || n);
+
+  return `
+    <div class="card">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <div>
+          <div class="muted">Mach-gut-Konto</div>
+          <div class="big">${total} ♥</div>
+          <div class="muted">Nächstes 🎁 in <b>${toNext}</b> ♥</div>
+        </div>
+        <div class="row">
+          <button class="btn ok" onclick="quickPlay()">Heute spielen</button>
+          <button class="btn" onclick="openReward(false)">🎁</button>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <img src="./snuggy.png" alt="Snuggy" style="width:52px;height:52px;border-radius:18px;border:1px solid var(--line);background:rgba(2,6,23,.35)">
+        <div class="muted"><b style="color:var(--ink)">Snuggy sagt:</b><br>„${escapeHtml(snuggyLine())}“</div>
+      </div>
+    </div>
+
+    <div style="height:12px"></div>
+
+    <div class="card">
+      <h2>iPhone-Install (Kurz)</h2>
+      <div class="muted">Safari → Teilen → „Zum Home-Bildschirm“ → dann als App starten.</div>
+    </div>
+  `;
+}
+
+function quickPlay(){
+  // Kategorie mit den wenigsten Marks
+  const cats=["finanzen","freizeit","haushalt"];
+  const score = cat => state.quests.filter(q=>q.cat===cat).reduce((a,q)=>a+(q.marks?.length||0),0);
+  cats.sort((a,b)=>score(a)-score(b));
+  state.activeCat=cats[0];
+  state.view="cat";
+  saveState(); render();
+  toast("Ein Schritt reicht.");
+}
+
+function catsView(){
+  return `
+    <div class="card">
+      <h2>Kategorien</h2>
+      <div class="muted">Drei Türen. Mehr brauchen wir nicht.</div>
+      <div style="height:12px"></div>
+      <div class="row">
+        ${["finanzen","freizeit","haushalt"].map(cat=>`
+          <button class="btn" onclick="openCat('${cat}')">${catLabel(cat)}</button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function questCard(q){
+  const done = (q.marks||[]).length;
+  const bar = Math.min(100, (done / q.gridSize) * 100);
+  const set = new Set((q.marks||[]).map(m=>m.i));
+
+  return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <img src="./snuggy.png" alt="Snuggy" class="snuggyMini">
+          <div>
+            <div style="font-weight:950">${escapeHtml(q.title)}</div>
+            <div class="muted">Start: <b>${escapeHtml(q.firstStep||"Ein winziger Anfang reicht.")}</b></div>
+          </div>
+        </div>
+        <div class="pill">${done}/${q.gridSize} ♥</div>
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="qbar"><div style="width:${bar}%"></div></div>
+
+      <div style="height:12px"></div>
+      <div class="row">
+        <button class="btn ok" onclick="addHeart('${q.id}', 1)">Mini +1 ♥</button>
+        <button class="btn" onclick="addHeart('${q.id}', 2)">Normal +2 ♥</button>
+        <button class="btn warn" onclick="addHeart('${q.id}', 3)">Boss +3 ♥</button>
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="row">
+        <button class="btn ghost" onclick="undoLast('${q.id}')">↩︎ Undo</button>
+        <button class="btn ghost" onclick="resetQuest('${q.id}')">Raster leeren</button>
+      </div>
+
+      <div class="grid">
+        ${Array.from({length:q.gridSize}, (_,k)=>k+1).map(i=>{
+          const isDone = set.has(i);
+          return `<div class="cell ${isDone?'done':''}">${isDone ? "♥" : i}</div>`;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function catView(cat){
+  const items = state.quests.filter(q=>q.cat===cat);
+  return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+        <div>
+          <h2 style="margin:0">${catLabel(cat)}</h2>
+          <div class="muted">Mini zählt. Immer.</div>
+        </div>
+        <button class="btn" onclick="go('kats')">↩︎</button>
+      </div>
+    </div>
+
+    <div style="height:12px"></div>
+
+    ${items.map(q=>questCard(q)).join('<div style="height:12px"></div>')}
+  `;
+}
+
+function bankView(){
+  const total = Number(state.bank.heartsTotal||0);
+  const n = Math.max(1, Number(state.bank.giftEvery||5));
+  const toNext = n - (total % n || n);
+  const bigAt = Math.max(10, Number(state.bank.bigGoalAt||100));
+  const toBig = bigAt - (total % bigAt || bigAt);
+
+  const hist = (state.bank.rewardHistory||[]).slice(-6).reverse();
+
+  return `
+    <div class="card">
+      <h2>Mach-gut-Konto</h2>
+      <div class="big">${total} ♥</div>
+      <div class="muted">Nächstes 🎁 in <b>${toNext}</b> ♥ · Boss-Ziel in <b>${toBig}</b> ♥</div>
+
+      <div class="sep"></div>
+
+      <div class="two">
+        <div>
+          <div class="muted">Geschenk alle X Herzen</div>
+          <input type="number" min="1" step="1" value="${n}"
+            oninput="state.bank.giftEvery=Math.max(1,Number(this.value||5)); saveState(); render();" />
+        </div>
+        <div>
+          <div class="muted">Boss-Ziel bei X Herzen</div>
+          <input type="number" min="10" step="10" value="${bigAt}"
+            oninput="state.bank.bigGoalAt=Math.max(10,Number(this.value||100)); saveState(); render();" />
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="muted">Boss-Text</div>
+      <input type="text" value="${escapeHtml(state.bank.bigGoalText||"")}"
+        oninput="state.bank.bigGoalText=this.value; saveState();" />
+
+      <div class="sep"></div>
+
+      <h2 style="font-size:14px;margin:0 0 10px">Belohnungen (eine pro Zeile)</h2>
+      <textarea oninput="state.bank.rewards=this.value.split('\\n').map(s=>s.trim()).filter(Boolean); saveState();"
+      >${(state.bank.rewards||[]).join("\n")}</textarea>
+
+      <div class="sep"></div>
+
+      <h2 style="font-size:14px;margin:0 0 10px">Letzte 🎁</h2>
+      ${
+        hist.length ? hist.map(h=>`
+          <div class="pill" style="display:flex;justify-content:space-between;gap:10px;margin:6px 0">
+            <span>${escapeHtml(h.text)}</span>
+            <span class="muted">${new Date(h.t).toLocaleDateString()}</span>
+          </div>
+        `).join("") : `<div class="muted">Noch keine. Snuggy wartet auf das erste Geschenk.</div>`
+      }
+    </div>
+  `;
+}
+
+function settingsView(){
+  return `
+    <div class="card">
+      <h2>Einstellungen</h2>
+      <div class="sep"></div>
+
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+        <div>
+          <div style="font-weight:950">Wenig Animation</div>
+          <div class="muted">Weniger Reiz, mehr Ruhe.</div>
+        </div>
+        <input type="checkbox" ${state.settings.lowMotion?'checked':''}
+          onchange="state.settings.lowMotion=this.checked; saveState(); render();" />
+      </div>
+
+      <div class="sep"></div>
+
+      <button class="btn warn" onclick="resetAll()">Alles zurücksetzen</button>
+      <div class="muted" style="margin-top:8px">Nur wenn wirklich neu anfangen.</div>
+
+      <div class="sep"></div>
+
+      <div class="muted">
+        Push (später optional): Hier kommt später ein Button hin wie „Benachrichtigungen aktivieren“,
+        falls du irgendwann doch Cloudflare Worker/Cron oder einen Dienst nutzt.
+      </div>
+    </div>
+  `;
+}
+
+function resetAll(){
+  if(!confirm("Wirklich alles löschen?")) return;
+  state = structuredClone(DEFAULT);
+  saveState(); render();
+  toast("Neu gestartet. Snuggy ist nicht beleidigt.");
+}
+
+function render(){
+  document.documentElement.style.scrollBehavior = state.settings.lowMotion ? "auto" : "smooth";
+  const app = document.getElementById("app");
+  if(state.view==="start") app.innerHTML = startView();
+  else if(state.view==="kats") app.innerHTML = catsView();
+  else if(state.view==="cat") app.innerHTML = catView(state.activeCat || "finanzen");
+  else if(state.view==="bank") app.innerHTML = bankView();
+  else if(state.view==="settings") app.innerHTML = settingsView();
+  else app.innerHTML = startView();
+}
+
+/* Service Worker: Offline-App-Shell */
+if("serviceWorker" in navigator){
+  window.addEventListener("load", async ()=>{
+    try{ await navigator.serviceWorker.register("./sw.js"); }catch(e){}
+  });
+}
+
+render();
+</script>
+</body>
+</html>
